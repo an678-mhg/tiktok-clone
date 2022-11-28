@@ -10,7 +10,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     <div className="text-white">
       <Header />
 
-      <div className="container flex">{children}</div>
+      <div className="container mt-[57px] flex">{children}</div>
     </div>
   );
 };
