@@ -3,7 +3,7 @@ import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 
 import { trpc } from "../utils/trpc";
-
+import "react-lazy-load-image-component/src/effects/blur.css";
 import "../styles/globals.css";
 
 const MyApp: AppType<{ session: Session | null }> = ({
