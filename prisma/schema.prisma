@@ -10,12 +10,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Example {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
 // Necessary for Next auth
 model Account {
   id                String  @id @default(cuid())
@@ -51,6 +45,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  bio           String?
 }
 
 model VerificationToken {

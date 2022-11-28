@@ -3,6 +3,10 @@ import React from "react";
 import Plus from "../../icons/Plus";
 import { useSession } from "next-auth/react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import Tippy from "@tippyjs/react/headless";
+import { AiOutlineUser } from "react-icons/ai";
+import { CiLogin } from "react-icons/ci";
+import { signOut } from "next-auth/react";
 
 const Account = () => {
   const { data } = useSession();
@@ -25,15 +29,39 @@ const Account = () => {
           </Link>
         </button>
       ) : (
-        <div className="ml-4">
-          <div className="h-8 w-8">
-            <LazyLoadImage
-              className="rounded-full"
-              effect="opacity"
-              src={data?.user?.image!}
-            />
+        <Tippy
+          interactive
+          placement="bottom-end"
+          render={(attrs) => (
+            <div {...attrs} className="overflow-hidden rounded-md bg-[#222]">
+              <ul>
+                <li className="border-b border-gray-600 py-2 pl-4 pr-8 transition-colors hover:bg-[#333]">
+                  <Link href="/" className="flex items-center font-normal">
+                    <AiOutlineUser fontSize={20} className="mr-2" /> View
+                    profile
+                  </Link>
+                </li>
+                <li
+                  onClick={() => signOut()}
+                  className="flex cursor-pointer items-center px-4 py-2 transition-colors hover:bg-[#333]"
+                >
+                  <CiLogin fontSize={20} className="mr-2" />
+                  <button>Log out</button>
+                </li>
+              </ul>
+            </div>
+          )}
+        >
+          <div className="ml-4 cursor-pointer">
+            <div className="h-8 w-8">
+              <LazyLoadImage
+                className="rounded-full"
+                effect="opacity"
+                src={data?.user?.image!}
+              />
+            </div>
           </div>
-        </div>
+        </Tippy>
       )}
     </div>
   );

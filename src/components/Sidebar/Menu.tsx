@@ -22,7 +22,7 @@ const Menu = () => {
   return (
     <ul>
       {menus.map((item) => (
-        <li>
+        <li key={item.href}>
           <Link href={item.href} className="flex items-center p-2">
             <item.icons
               color={router.asPath === item.href ? "#FF3B5C" : "#fff"}

@@ -8,7 +8,7 @@ const SearchBox = () => {
         className="flex-1 bg-transparent py-2.5 pl-4"
         placeholder="Search accounts and videos"
       />
-      <div className="border-l border-[#484848] pl-2">
+      <div className="cursor-pointer border-l border-[#484848] pl-2">
         <Search />
       </div>
     </div>
