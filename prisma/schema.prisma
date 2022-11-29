@@ -46,6 +46,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   bio           String?
+  video         Video[]
 }
 
 model VerificationToken {
@@ -54,4 +55,17 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+model Video {
+  id        String   @id @default(cuid())
+  title     String   @db.Text
+  videoUrl  String
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    String?
+  width     Int
+  height    Int
+  thumnail  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
 }

@@ -7,7 +7,7 @@ import Logo from "../icons/Logo";
 import { signIn } from "next-auth/react";
 import { unstable_getServerSession as getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
 
 const signInMethods = [
   {
@@ -70,21 +70,24 @@ const SignIn = () => {
   );
 };
 
-// export const getServerSideProps: GetServerSideProps = async () => {
-//   const session = await getServerSession(authOptions);
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const session = await getServerSession(context.req, context.res, authOptions);
+  const redirect = (context.query?.redirect as string) || "/";
 
-//   if (session?.user) {
-//     return {
-//       redirect: {
-//         permanent: true,
-//         destination: "/",
-//       },
-//     };
-//   } else {
-//     return {
-//       props: {},
-//     };
-//   }
-// };
+  if (session?.user) {
+    return {
+      redirect: {
+        permanent: true,
+        destination: redirect,
+      },
+    };
+  } else {
+    return {
+      props: {},
+    };
+  }
+};
 
 export default SignIn;

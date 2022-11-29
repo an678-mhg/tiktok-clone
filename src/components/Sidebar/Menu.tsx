@@ -19,8 +19,9 @@ const menus = [
 
 const Menu = () => {
   const router = useRouter();
+
   return (
-    <ul>
+    <ul className="mb-4">
       {menus.map((item) => (
         <li key={item.href}>
           <Link href={item.href} className="flex items-center p-2">

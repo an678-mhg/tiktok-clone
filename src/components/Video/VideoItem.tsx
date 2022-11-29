@@ -2,36 +2,43 @@ import React from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { FcMusic } from "react-icons/fc";
 import VideoPlayer from "./VideoPlayer";
+import { Video } from "../../types";
+import { removeAccents } from "../../utils/contants";
 
-const VideoItem = () => {
+interface VideoItemProps {
+  video: Video;
+}
+
+const VideoItem: React.FC<VideoItemProps> = ({ video }) => {
   return (
-    <div className="flex items-start justify-between border-b border-[#2f2f2f] pb-4">
+    <div className="flex items-start justify-between border-b border-[#2f2f2f] py-4">
       <div className="flex">
         <div className="h-[56px] w-[56px]">
           <LazyLoadImage
             className="rounded-full"
             effect="opacity"
-            src="https://p16-sign-va.tiktokcdn.com/tos-useast2a-avt-0068-giso/e37b05309c392f48989b09e1a929a13c~c5_100x100.jpeg?x-expires=1669813200&x-signature=No%2FzvCajrVWT%2Fzxv5Nxh1GFi0lc%3D"
+            src={video?.user?.image}
           />
         </div>
-        <div className="ml-3">
+        <div className="ml-3 flex-1">
           <div className="flex items-center">
-            <h3 className="text-[18px] font-bold">kienpump2</h3>
+            <h3 className="text-[18px] font-bold">
+              @
+              {removeAccents(
+                video?.user?.name?.toLocaleLowerCase().split(" ").join("")
+              )}
+            </h3>
             <p className="ml-2 text-sm text-[rgba(255,255,255,0.75)]">
-              Kiên đéo đùa
+              {video?.user?.name}
             </p>
           </div>
-          <p className="text-[16px] font-normal">
-            Something for MOA before the final bang❤️
-          </p>
-          <p className="mt-1 flex items-center">
-            <FcMusic width={20} height={20} className="mr-2" />
-            <span className="text-[16px] font-normal">
-              Rung Dong . Edward x Vũ Khắc Anh - BD Media Music
-            </span>
-          </p>
+          <p className="text-[16px] font-normal">{video?.title}</p>
 
-          <VideoPlayer />
+          <VideoPlayer
+            videoUrl={video?.videoUrl}
+            height={video.height}
+            width={video.width}
+          />
         </div>
       </div>
 
