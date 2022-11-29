@@ -1,3 +1,4 @@
+import { Likes } from "@prisma/client";
 import { z } from "zod";
 import { router, protectedProcedure, publicProcedure } from "../trpc";
 
@@ -25,9 +26,26 @@ export const videoRouter = router({
     }),
   getVideos: publicProcedure.query(async ({ ctx }) => {
     const videos = await ctx.prisma.video.findMany({
-      include: { user: true },
-      orderBy: { updatedAt: "desc" },
+      include: { user: true, likes: true },
+      orderBy: { updatedAt: "asc" },
     });
-    return videos;
+
+    let likes: Likes[];
+
+    if (ctx.session?.user) {
+      likes = await ctx.prisma.likes.findMany({
+        where: {
+          userId: ctx.session.user.id,
+          videoId: { in: videos.map((item) => item.id) },
+        },
+      });
+    }
+
+    return {
+      videos: videos.map((item) => ({
+        ...item,
+        like: likes.some((like) => like.videoId === item.id),
+      })),
+    };
   }),
 });

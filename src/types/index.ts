@@ -28,4 +28,5 @@ export interface Video {
   createdAt: Date;
   updatedAt: Date;
   user: User;
+  like: boolean;
 }

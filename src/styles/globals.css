@@ -4,6 +4,14 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --aqua: #00f2ea;
+  --pink: #ff0050;
+  --black: #000000;
+  --scale: 1.2;
+  --x: 80px;
+}
+
 * {
   padding: 0;
   margin: 0;

@@ -4,6 +4,10 @@ import { AiOutlineCloudUpload, AiOutlineUpload } from "react-icons/ai";
 import toast from "react-hot-toast";
 import axios from "axios";
 import { trpc } from "../utils/trpc";
+import { useRouter } from "next/router";
+import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { unstable_getServerSession as getServerSession } from "next-auth";
+import { authOptions } from "./api/auth/[...nextauth]";
 
 const Upload = () => {
   const videoPreviewRef = useRef<any>();
@@ -13,7 +17,9 @@ const Upload = () => {
   const [title, setTitle] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const { mutate } = trpc.video.createVideo.useMutation();
+  const router = useRouter();
+
+  const { mutateAsync } = trpc.video.createVideo.useMutation();
 
   const handleVideoFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = (e.target.files as FileList)[0];
@@ -72,7 +78,7 @@ const Upload = () => {
         },
       });
 
-      await mutate({
+      const res = await mutateAsync({
         title,
         videoHeight: getVideoWithHeight().height,
         videoWidth: getVideoWithHeight().width,
@@ -83,6 +89,10 @@ const Upload = () => {
 
       toast.dismiss(toastId);
       toast.success("Upload video success!");
+
+      handleDiscard();
+      setTitle("");
+      router.push(`/video/${res.video.id}`);
     } catch (error) {
       setLoading(false);
       toast.dismiss(toastId);
@@ -201,6 +211,25 @@ const Upload = () => {
       </div>
     </MainLayout>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const session = await getServerSession(context.req, context.res, authOptions);
+
+  if (session?.user) {
+    return {
+      props: {},
+    };
+  } else {
+    return {
+      redirect: {
+        destination: `/sign-in?redirect=/upload`,
+        permanent: false,
+      },
+    };
+  }
 };
 
 export default Upload;

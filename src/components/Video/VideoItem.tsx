@@ -11,7 +11,7 @@ interface VideoItemProps {
 
 const VideoItem: React.FC<VideoItemProps> = ({ video }) => {
   return (
-    <div className="flex items-start justify-between border-b border-[#2f2f2f] py-4">
+    <div className="flex items-start justify-between border-b border-[#2f2f2f] py-5">
       <div className="flex">
         <div className="h-[56px] w-[56px]">
           <LazyLoadImage
@@ -22,7 +22,7 @@ const VideoItem: React.FC<VideoItemProps> = ({ video }) => {
         </div>
         <div className="ml-3 flex-1">
           <div className="flex items-center">
-            <h3 className="text-[18px] font-bold">
+            <h3 className="text-[16px] font-bold">
               @
               {removeAccents(
                 video?.user?.name?.toLocaleLowerCase().split(" ").join("")
@@ -32,9 +32,15 @@ const VideoItem: React.FC<VideoItemProps> = ({ video }) => {
               {video?.user?.name}
             </p>
           </div>
-          <p className="text-[16px] font-normal">{video?.title}</p>
+          <p className="mt-2 text-sm font-normal">{video?.title}</p>
+          <p className="mt-2 flex items-center text-sm font-semibold">
+            <FcMusic className="mr-2" />{" "}
+            <span>Nhạc nền - {video?.user?.name}</span>
+          </p>
 
           <VideoPlayer
+            like={video.like}
+            videoId={video?.id}
             videoUrl={video?.videoUrl}
             height={video.height}
             width={video.width}
