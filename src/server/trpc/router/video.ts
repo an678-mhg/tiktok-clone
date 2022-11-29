@@ -26,7 +26,7 @@ export const videoRouter = router({
     }),
   getVideos: publicProcedure.query(async ({ ctx }) => {
     const videos = await ctx.prisma.video.findMany({
-      include: { user: true, likes: true },
+      include: { user: true, _count: { select: { likes: true } } },
       orderBy: { updatedAt: "asc" },
     });
 
@@ -44,7 +44,7 @@ export const videoRouter = router({
     return {
       videos: videos.map((item) => ({
         ...item,
-        like: likes.some((like) => like.videoId === item.id),
+        isLike: likes.some((like) => item.id === like.videoId),
       })),
     };
   }),

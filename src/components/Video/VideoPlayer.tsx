@@ -19,6 +19,7 @@ interface VideoPlayerProps {
   height: number;
   videoId: string;
   like: boolean;
+  likeCount: number;
 }
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({
@@ -27,10 +28,12 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   height,
   videoId,
   like,
+  likeCount,
 }) => {
   const [isPlay, setIsPlay] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isLike, setIslike] = useState(like);
+  const [likes, setLikes] = useState(likeCount);
 
   const { isSound, setSound } = useStore();
 
@@ -46,7 +49,12 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
 
   const videoRef = useRef<any>();
 
-  const { mutateAsync } = trpc.like.likeVideo.useMutation();
+  const { mutateAsync } = trpc.like.likeVideo.useMutation({
+    onError: () => {
+      toast.error("Something went wrong!");
+      setIslike((prev) => !prev);
+    },
+  });
 
   useEffect(() => {
     if (isSound) {
@@ -64,6 +72,11 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
       return;
     }
     setIslike((prev) => !prev);
+    if (isLike) {
+      setLikes((prev) => prev - 1);
+    } else {
+      setLikes((prev) => prev + 1);
+    }
     mutateAsync({ videoId: videoId });
   };
 
@@ -115,24 +128,23 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         <div className="mb-4 flex flex-col items-center">
           <div
             onClick={handleLike}
-            className="flex h-12 w-12 items-center justify-center rounded-full bg-[#2f2f2f]"
+            className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-[#2f2f2f]"
           >
-            {isLike ? (
-              <FcLike fontSize={21} color="#fff" />
-            ) : (
-              <BsFillHeartFill fontSize={21} />
-            )}
+            <BsFillHeartFill
+              fontSize={21}
+              className={`${isLike ? "text-primary" : "text-white"}`}
+            />
           </div>
-          <p className="mt-2 text-[12px] font-normal text-[#fffffb]">1K</p>
+          <p className="mt-2 text-[12px] font-normal text-[#fffffb]">{likes}</p>
         </div>
         <div className="mb-4 flex flex-col items-center">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#2f2f2f]">
+          <div className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-[#2f2f2f]">
             <AiFillMessage fontSize={21} color="#fff" />
           </div>
           <p className="mt-2 text-[12px] font-normal text-[#fffffb]">10</p>
         </div>
         <div className="flex flex-col items-center">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#2f2f2f]">
+          <div className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-[#2f2f2f]">
             <IoMdShareAlt fontSize={21} color="#fff" />
           </div>
           <p className="mt-2 text-[12px] font-normal text-[#fffffb]">500</p>

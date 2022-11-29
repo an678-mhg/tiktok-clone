@@ -39,7 +39,8 @@ const VideoItem: React.FC<VideoItemProps> = ({ video }) => {
           </p>
 
           <VideoPlayer
-            like={video.like}
+            likeCount={video?._count?.likes}
+            like={video.isLike}
             videoId={video?.id}
             videoUrl={video?.videoUrl}
             height={video.height}
