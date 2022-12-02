@@ -5,9 +5,12 @@ import VideoItem from "../components/Video/VideoItem";
 import { Spin } from "react-cssfx-loading";
 
 const Main = () => {
-  const { data, isLoading } = trpc.video.getVideos.useQuery(undefined, {
-    refetchOnWindowFocus: false,
-  });
+  const { data, isLoading, refetch } = trpc.video.getVideos.useQuery(
+    undefined,
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
 
   const observer = useRef<IntersectionObserver | null>(null);
 
@@ -62,7 +65,7 @@ const Main = () => {
         </div>
       )}
       {data?.videos?.map((video) => (
-        <VideoItem key={video?.id} video={video as Video} />
+        <VideoItem refetch={refetch} key={video?.id} video={video as Video} />
       ))}
     </div>
   );

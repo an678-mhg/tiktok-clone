@@ -1,8 +1,14 @@
 import React from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import Check from "../../icons/Check";
+import { User } from "../../types";
+import { removeAccents } from "../../utils/contants";
 
-const AccountPreview = () => {
+interface AccountPreviewProps {
+  account: User;
+}
+
+const AccountPreview: React.FC<AccountPreviewProps> = ({ account }) => {
   return (
     <div className="w-[320px] rounded-[10px] bg-[#333] p-4">
       <div className="flex items-center justify-between">
@@ -10,7 +16,7 @@ const AccountPreview = () => {
           <LazyLoadImage
             className="rounded-full"
             effect="opacity"
-            src="https://p16-sign-va.tiktokcdn.com/tos-useast2a-avt-0068-aiso/65d3c6b1d1e205c75536ccf1f26d552d~c5_100x100.jpeg?x-expires=1669791600&x-signature=Smn3D9k9zDF264irxHS3%2B7jMrA4%3D"
+            src={account?.image}
           />
         </div>
         <button className="rounded-[4px] bg-primary px-4 py-1 text-[16px] font-semibold text-white">
@@ -19,13 +25,16 @@ const AccountPreview = () => {
       </div>
       <div className="mt-4">
         <h3 className="mt-[-2px] flex items-center text-[16px] font-bold">
-          theanh28entertainment{" "}
+          @
+          {removeAccents(
+            account?.name?.toLocaleLowerCase().split(" ").join("")
+          )}
           <span className="ml-1 inline-block">
             <Check />
           </span>
         </h3>
         <p className="text-[12px] text-[rgba(255,255,255,0.75)]">
-          Theanh28 Entertainment
+          {account.name}
         </p>
       </div>
       <div className="mt-4 flex items-center">

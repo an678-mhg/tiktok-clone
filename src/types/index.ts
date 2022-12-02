@@ -32,4 +32,5 @@ export interface Video {
     likes: number;
   };
   isLike: boolean;
+  isFollow: boolean;
 }

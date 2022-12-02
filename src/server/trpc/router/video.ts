@@ -1,4 +1,4 @@
-import { Likes } from "@prisma/client";
+import { Follow, Likes } from "@prisma/client";
 import { z } from "zod";
 import { router, protectedProcedure, publicProcedure } from "../trpc";
 
@@ -27,24 +27,39 @@ export const videoRouter = router({
   getVideos: publicProcedure.query(async ({ ctx }) => {
     const videos = await ctx.prisma.video.findMany({
       include: { user: true, _count: { select: { likes: true } } },
-      orderBy: { updatedAt: "asc" },
+      orderBy: { updatedAt: "desc" },
     });
 
-    let likes: Likes[];
+    let likes: Likes[] = [];
+    let follows: Follow[] = [];
 
     if (ctx.session?.user) {
-      likes = await ctx.prisma.likes.findMany({
-        where: {
-          userId: ctx.session.user.id,
-          videoId: { in: videos.map((item) => item.id) },
-        },
-      });
+      const [likeByMe, followByMe] = await Promise.all([
+        ctx.prisma.likes.findMany({
+          where: {
+            userId: ctx.session.user.id,
+            videoId: { in: videos.map((item) => item.id) },
+          },
+        }),
+        ctx.prisma.follow.findMany({
+          where: {
+            followerId: ctx.session.user.id,
+            followingId: { in: videos.map((item) => item.user?.id!) },
+          },
+        }),
+      ]);
+
+      likes = likeByMe;
+      follows = followByMe;
     }
 
     return {
       videos: videos.map((item) => ({
         ...item,
         isLike: likes.some((like) => item.id === like.videoId),
+        isFollow: follows.some(
+          (follow) => item.user?.id === follow.followingId
+        ),
       })),
     };
   }),

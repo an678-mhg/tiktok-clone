@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import MainLayout from "../layout/MainLayout";
 import { AiOutlineCloudUpload, AiOutlineUpload } from "react-icons/ai";
 import toast from "react-hot-toast";
@@ -16,6 +16,8 @@ const Upload = () => {
   const [videoPreview, setVideoPreview] = useState<string | null>();
   const [title, setTitle] = useState("");
   const [loading, setLoading] = useState(false);
+  const [videoWidth, setVideoWidth] = useState(0);
+  const [videoHeight, setVideoHeight] = useState(0);
 
   const router = useRouter();
 
@@ -38,6 +40,12 @@ const Upload = () => {
     setVideoPreview(URL.createObjectURL(file));
   };
 
+  useEffect(() => {
+    return () => {
+      videoPreview && URL.revokeObjectURL(videoPreview);
+    };
+  }, [videoPreview]);
+
   const handleDiscard = () => {
     setVideoFile(null);
     setVideoPreview(null);
@@ -54,12 +62,15 @@ const Upload = () => {
 
   const handleUploadVideo = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (!videoFile) {
       toast.error("You haven't selected any videos yet");
       return;
     }
 
-    console.log(getVideoWithHeight());
+    const { width, height } = getVideoWithHeight();
+    setVideoHeight(height);
+    setVideoWidth(width);
 
     const toastId = toast.loading("Upload....");
     setLoading(true);
@@ -80,8 +91,8 @@ const Upload = () => {
 
       const res = await mutateAsync({
         title,
-        videoHeight: getVideoWithHeight().height,
-        videoWidth: getVideoWithHeight().width,
+        videoHeight,
+        videoWidth,
         videoUrl: videoUrl.data?.url,
       });
 

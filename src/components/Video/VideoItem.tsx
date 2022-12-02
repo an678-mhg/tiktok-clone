@@ -1,15 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { FcMusic } from "react-icons/fc";
 import VideoPlayer from "./VideoPlayer";
 import { Video } from "../../types";
 import { removeAccents } from "../../utils/contants";
+import { trpc } from "../../utils/trpc";
+import toast from "react-hot-toast";
+import { useSession } from "next-auth/react";
 
 interface VideoItemProps {
   video: Video;
+  refetch: Function;
 }
 
-const VideoItem: React.FC<VideoItemProps> = ({ video }) => {
+const VideoItem: React.FC<VideoItemProps> = ({ video, refetch }) => {
+  const { mutateAsync } = trpc.follow.followUser.useMutation({
+    onError: () => {
+      toast.error("Có lỗi xảy ra");
+    },
+    onSuccess: () => {
+      refetch();
+    },
+  });
+
+  const handleToggleFollow = () => {
+    if (video?.user?.id === data?.user?.id) return;
+    mutateAsync({ followingId: video?.user?.id });
+  };
+
+  const { data } = useSession();
+
   return (
     <div className="flex items-start justify-between border-b border-[#2f2f2f] py-5">
       <div className="flex">
@@ -49,8 +69,18 @@ const VideoItem: React.FC<VideoItemProps> = ({ video }) => {
         </div>
       </div>
 
-      <button className="rounded-[2px] border border-primary bg-[#2f2f2f] py-1 px-4 text-[15px] font-semibold text-primary">
-        Follow
+      <button
+        disabled={video?.user?.id === data?.user?.id}
+        onClick={handleToggleFollow}
+        className={`rounded-[2px] border ${
+          video.isFollow
+            ? "border-transparent text-white"
+            : "border-primary text-primary"
+        } bg-[#2f2f2f] py-1 ${
+          video?.user?.id === data?.user?.id && "cursor-not-allowed opacity-60"
+        } px-4 text-[15px] font-semibold`}
+      >
+        {video.isFollow ? "Following" : "Follow"}
       </button>
     </div>
   );
