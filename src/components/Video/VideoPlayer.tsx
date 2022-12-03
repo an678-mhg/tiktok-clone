@@ -89,8 +89,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
       <div
         className={`mt-3 ${
           height > width * 1.3
-            ? "aspect-[16/9] flex-1"
-            : "aspect-[9/16] w-[289px]"
+            ? "aspect-[9/16] w-[289px]"
+            : "aspect-[16/9] flex-1"
         } relative max-w-full`}
       >
         <video

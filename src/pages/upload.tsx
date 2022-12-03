@@ -10,7 +10,7 @@ import { unstable_getServerSession as getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]";
 
 const Upload = () => {
-  const videoPreviewRef = useRef<any>();
+  const videoPreviewRef = useRef<HTMLVideoElement | null>(null);
 
   const [videoFile, setVideoFile] = useState<File | null>();
   const [videoPreview, setVideoPreview] = useState<string | null>();
@@ -36,8 +36,21 @@ const Upload = () => {
       return toast.error("Your file cannot exceed 30MB");
     }
 
+    const preview = URL.createObjectURL(file);
+
     setVideoFile(file);
-    setVideoPreview(URL.createObjectURL(file));
+    setVideoPreview(preview);
+
+    const video = document.createElement("video");
+    video.setAttribute("src", preview);
+    video.setAttribute("type", "video/mp4");
+    video.addEventListener("loadedmetadata", (e) => {
+      setVideoWidth(video?.videoWidth);
+      setVideoHeight(video?.videoHeight);
+
+      console.log("width", video?.videoWidth);
+      console.log("height", video?.videoHeight);
+    });
   };
 
   useEffect(() => {
@@ -51,15 +64,6 @@ const Upload = () => {
     setVideoPreview(null);
   };
 
-  const getVideoWithHeight = () => {
-    const width = videoPreviewRef?.current?.videoHeight as number;
-    const height = videoPreviewRef?.current?.videoWidth as number;
-    return {
-      width,
-      height,
-    };
-  };
-
   const handleUploadVideo = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -68,11 +72,7 @@ const Upload = () => {
       return;
     }
 
-    const { width, height } = getVideoWithHeight();
-    setVideoHeight(height);
-    setVideoWidth(width);
-
-    const toastId = toast.loading("Upload....");
+    const toastId = toast.loading("Upload....", { position: "bottom-left" });
     setLoading(true);
     try {
       const url = `https://api.cloudinary.com/v1_1/dhz1uowbg/video/upload`;
@@ -91,8 +91,8 @@ const Upload = () => {
 
       const res = await mutateAsync({
         title,
-        videoHeight,
         videoWidth,
+        videoHeight,
         videoUrl: videoUrl.data?.url,
       });
 

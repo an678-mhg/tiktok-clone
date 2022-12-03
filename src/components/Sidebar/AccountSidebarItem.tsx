@@ -3,11 +3,11 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import Check from "../../icons/Check";
 import Tippy from "@tippyjs/react/headless";
 import AccountPreview from "./AccountPreview";
-import { User } from "../../types";
+import { Account } from "../../types";
 import { removeAccents } from "../../utils/contants";
 
 interface AccountSidebarItemProps {
-  account: User;
+  account: Account;
 }
 
 const AccountSidebarItem: React.FC<AccountSidebarItemProps> = ({ account }) => {

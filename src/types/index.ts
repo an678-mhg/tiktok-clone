@@ -34,3 +34,7 @@ export interface Video {
   isLike: boolean;
   isFollow: boolean;
 }
+
+export interface Account extends User {
+  _count: { followings: number; followers: number };
+}

@@ -1,11 +1,11 @@
 import React from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import Check from "../../icons/Check";
-import { User } from "../../types";
+import { Account } from "../../types";
 import { removeAccents } from "../../utils/contants";
 
 interface AccountPreviewProps {
-  account: User;
+  account: Account;
 }
 
 const AccountPreview: React.FC<AccountPreviewProps> = ({ account }) => {
@@ -19,9 +19,6 @@ const AccountPreview: React.FC<AccountPreviewProps> = ({ account }) => {
             src={account?.image}
           />
         </div>
-        <button className="rounded-[4px] bg-primary px-4 py-1 text-[16px] font-semibold text-white">
-          Follow
-        </button>
       </div>
       <div className="mt-4">
         <h3 className="mt-[-2px] flex items-center text-[16px] font-bold">
@@ -39,12 +36,12 @@ const AccountPreview: React.FC<AccountPreviewProps> = ({ account }) => {
       </div>
       <div className="mt-4 flex items-center">
         <div className="flex items-center">
-          <p className="font-semibold">8.1M</p>
+          <p className="font-semibold">{account._count.followers}</p>
           <p className="ml-1 text-[rgba(255,255,255,0.75)]">Follower</p>
         </div>
         <div className="ml-3 flex items-center">
-          <p className="font-semibold">5.1M</p>
-          <p className="ml-1 text-[rgba(255,255,255,0.75)]">Likes</p>
+          <p className="font-semibold">{account._count.followings}</p>
+          <p className="ml-1 text-[rgba(255,255,255,0.75)]">Following</p>
         </div>
       </div>
     </div>

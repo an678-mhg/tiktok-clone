@@ -1,20 +1,28 @@
 import React from "react";
-import { User } from "../../types";
+import { Account } from "../../types";
 import { trpc } from "../../utils/trpc";
 import AccountSidebarItem from "./AccountSidebarItem";
 
 interface AccountSidebarProps {
   title: "Suggested accounts" | "Following accounts";
-  accounts: User[];
+  type: "getAccountFollowing" | "getAccountSuggestion";
 }
 
-const AccountSidebar: React.FC<AccountSidebarProps> = ({ accounts, title }) => {
+const AccountSidebar: React.FC<AccountSidebarProps> = ({ title, type }) => {
+  const { data } = trpc.follow[type].useQuery(undefined, {
+    refetchOnWindowFocus: false,
+  });
+
+  if (data?.accounts?.length === 0) {
+    return <></>;
+  }
+
   return (
     <div className="border-t border-[#484848] py-4">
       <h3 className="mb-2 px-2 text-sm font-medium">{title}</h3>
       <div>
-        {accounts?.map((item) => (
-          <AccountSidebarItem account={item as User} key={item.id} />
+        {data?.accounts?.map((item) => (
+          <AccountSidebarItem account={item as Account} key={item.id} />
         ))}
       </div>
     </div>
