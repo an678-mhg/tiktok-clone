@@ -17,7 +17,7 @@ export interface User {
   bio?: any;
 }
 
-export interface Video {
+export interface Video<T> {
   id: string;
   title: string;
   videoUrl: string;
@@ -27,7 +27,7 @@ export interface Video {
   thumnail?: any;
   createdAt: Date;
   updatedAt: Date;
-  user: User;
+  user: T;
   _count: {
     likes: number;
   };
@@ -37,4 +37,13 @@ export interface Video {
 
 export interface Account extends User {
   _count: { followings: number; followers: number };
+}
+
+export interface EmojiType {
+  slug: string;
+  character: string;
+  unicodeName: string;
+  codePoint: string;
+  group: string;
+  subGroup: string;
 }

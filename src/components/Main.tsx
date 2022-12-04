@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { Video } from "../types";
+import { User, Video } from "../types";
 import { trpc } from "../utils/trpc";
 import VideoItem from "../components/Video/VideoItem";
 import { Spin } from "react-cssfx-loading";
@@ -65,7 +65,11 @@ const Main = () => {
         </div>
       )}
       {data?.videos?.map((video) => (
-        <VideoItem refetch={refetch} key={video?.id} video={video as Video} />
+        <VideoItem
+          refetch={refetch}
+          key={video?.id}
+          video={video as Video<User>}
+        />
       ))}
     </div>
   );
