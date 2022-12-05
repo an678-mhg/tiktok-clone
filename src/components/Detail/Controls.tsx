@@ -117,18 +117,21 @@ const Controls: React.FC<ControlsProps> = ({ videoRef }) => {
 
   return (
     <div
-      className="absolute bottom-0 left-0 right-0 z-[9999] flex items-center p-5"
+      className="absolute bottom-0 left-0 right-0 z-[9999] flex items-center p-2 lg:p-5"
       onClick={(e) => e.stopPropagation()}
     >
       <div className="flex flex-1 items-center">
         <div
           onClick={handlePlayPause}
-          className="mr-4 flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-full bg-[#2f2f2f]"
+          className="mr-2 flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-full bg-[#2f2f2f] lg:mr-4"
         >
           {isPlay ? <GiPauseButton fontSize={15} /> : <FaPlay fontSize={15} />}
         </div>
         <p className="text-sm font-semibold">{formatVideoTime(currentTime)}</p>
-        <div ref={progressRef} className="mx-4 flex-1 cursor-pointer py-3">
+        <div
+          ref={progressRef}
+          className="mx-2 flex-1 cursor-pointer py-3 lg:mx-4"
+        >
           <div className="relative h-[3px] w-full overflow-hidden rounded-sm bg-gray-600">
             <div
               style={{
@@ -144,7 +147,7 @@ const Controls: React.FC<ControlsProps> = ({ videoRef }) => {
       </div>
       <div
         onClick={() => setIsSoundOn((prev) => !prev)}
-        className="ml-5 flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-full bg-[#2f2f2f]"
+        className="ml-2 flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-full bg-[#2f2f2f] lg:ml-5"
       >
         {isSoundOn ? <SoundOn /> : <SoundOff />}
       </div>

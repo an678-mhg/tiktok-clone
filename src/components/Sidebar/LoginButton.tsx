@@ -2,7 +2,7 @@ import React from "react";
 
 const LoginButton = () => {
   return (
-    <div className="px-2 pb-5">
+    <div className="hidden px-2 pb-5 lg:block">
       <p className="text-[16px] font-medium text-gray-500">
         Log in to follow creators, like videos, and view comments.
       </p>

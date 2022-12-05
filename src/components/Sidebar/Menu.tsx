@@ -29,7 +29,7 @@ const Menu = () => {
               color={router.asPath === item.href ? "#FF3B5C" : "#fff"}
             />{" "}
             <span
-              className={`ml-2 inline-block text-[18px] font-semibold ${
+              className={`ml-2 hidden text-[18px] font-semibold lg:inline-block ${
                 router.asPath === item.href && "text-primary"
               }`}
             >

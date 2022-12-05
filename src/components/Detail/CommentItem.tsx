@@ -4,7 +4,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 const CommentItem = () => {
   return (
     <div className="border-b border-[#2f2f2f] py-3">
-      <div className="flex items-center px-5">
+      <div className="flex items-center px-4 lg:px-5">
         <div className="h-10 w-10">
           <LazyLoadImage
             className="rounded-full"

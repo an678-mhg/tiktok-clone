@@ -38,15 +38,17 @@ const VideoItem: React.FC<VideoItemProps> = ({ video, refetch }) => {
   return (
     <div className="flex items-start justify-between border-b border-[#2f2f2f] py-5">
       <div className="flex">
-        <Link href={`/account/${video?.user?.id}`}>
-          <div className="h-[56px] w-[56px]">
-            <LazyLoadImage
-              className="rounded-full"
-              effect="opacity"
-              src={video?.user?.image}
-            />
-          </div>
+        <Link
+          href={`/account/${video?.user?.id}`}
+          className="block h-[56px] w-[56px]"
+        >
+          <LazyLoadImage
+            className="rounded-full"
+            effect="opacity"
+            src={video?.user?.image}
+          />
         </Link>
+
         <div className="ml-3 flex-1">
           <Link href={`/account/${video?.user?.id}`}>
             <div className="flex items-center">

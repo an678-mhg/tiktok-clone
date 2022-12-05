@@ -8,13 +8,14 @@ import { Account, Video } from "../../types";
 
 interface VideoDetailProps {
   video: Video<Account>;
+  host: string;
 }
 
-const VideoDetail: NextPage<VideoDetailProps> = ({ video }) => {
+const VideoDetail: NextPage<VideoDetailProps> = ({ video, host }) => {
   return (
     <div className="flex h-screen flex-col text-white lg:flex-row">
       <VideoPlayerDetail videoUrl={video?.videoUrl} />
-      <VideoInfo video={video} />
+      <VideoInfo host={host} video={video} />
     </div>
   );
 };
@@ -79,6 +80,7 @@ export const getServerSideProps: GetServerSideProps = async (
           isLike,
           isFollow,
         },
+        host: context.req?.headers?.host,
       },
     };
   } catch (error) {

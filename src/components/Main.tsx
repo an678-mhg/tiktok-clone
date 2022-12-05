@@ -3,11 +3,20 @@ import { User, Video } from "../types";
 import { trpc } from "../utils/trpc";
 import VideoItem from "../components/Video/VideoItem";
 import { Spin } from "react-cssfx-loading";
+import { InView } from "react-intersection-observer";
 
 const Main = () => {
-  const { data, isLoading, refetch } = trpc.video.getVideos.useQuery(
-    undefined,
+  const {
+    data,
+    isLoading,
+    refetch,
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+  } = trpc.video.getVideos.useInfiniteQuery(
+    { limit: 5 },
     {
+      getNextPageParam: (lastPage) => lastPage.nextSkip,
       refetchOnWindowFocus: false,
     }
   );
@@ -48,14 +57,19 @@ const Main = () => {
         });
       },
       {
-        threshold: [0, 0.2, 0.4, 0.6, 0.8, 1],
+        threshold: [0, 0.2, 0.4, 0.6, 0.8, 0.9, 1],
       }
     );
 
     videoElements.forEach((item) => {
       observer.current?.observe(item);
     });
-  }, [data?.videos?.length, isLoading]);
+  }, [data?.pages?.length, isLoading]);
+
+  if (data?.pages?.length === 0 || data?.pages[0]?.videos?.length === 0)
+    return (
+      <div className="my-4 flex-grow text-center">There is no video yet</div>
+    );
 
   return (
     <div className="px-5 pb-5">
@@ -64,13 +78,26 @@ const Main = () => {
           <Spin color="#FF3B5C" />
         </div>
       )}
-      {data?.videos?.map((video) => (
-        <VideoItem
-          refetch={refetch}
-          key={video?.id}
-          video={video as Video<User>}
-        />
-      ))}
+      {data?.pages?.map((page) =>
+        page?.videos?.map((video) => (
+          <VideoItem
+            refetch={refetch}
+            key={video?.id}
+            video={video as Video<User>}
+          />
+        ))
+      )}
+
+      <InView
+        fallbackInView
+        onChange={(InVidew) => {
+          if (InVidew && hasNextPage && !isFetchingNextPage) {
+            fetchNextPage();
+          }
+        }}
+      >
+        {({ ref }) => <div ref={ref} className="mt-4 flex h-10 w-full" />}
+      </InView>
     </div>
   );
 };

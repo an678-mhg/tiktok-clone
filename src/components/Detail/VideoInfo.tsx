@@ -1,27 +1,90 @@
 import Tippy from "@tippyjs/react/headless";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import React from "react";
+import React, { useState, useMemo } from "react";
+import toast from "react-hot-toast";
 import { AiFillMessage } from "react-icons/ai";
-import { BsFillHeartFill, BsLink45Deg } from "react-icons/bs";
+import { BsFillHeartFill } from "react-icons/bs";
 import { FcMusic } from "react-icons/fc";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Account, Video } from "../../types";
-import { providers, removeAccents } from "../../utils/contants";
+import {
+  copyToClipboard,
+  providers,
+  removeAccents,
+} from "../../utils/contants";
+import { trpc } from "../../utils/trpc";
 import AccountPreview from "../Sidebar/AccountPreview";
 import CommentItem from "./CommentItem";
 import SelectEmoji from "./SelectEmoji";
 
 interface VideoInfoProps {
   video: Video<Account>;
+  host: string;
 }
 
-const VideoInfo: React.FC<VideoInfoProps> = ({ video }) => {
+const VideoInfo: React.FC<VideoInfoProps> = ({ video, host }) => {
   const { data } = useSession();
+
+  const copyLink = useMemo(
+    () =>
+      host?.startsWith("localhost")
+        ? `http://${host}/video/${video?.id}`
+        : `https://${host}/video/${video?.id}`,
+    []
+  );
+
+  const [isLike, setIsLike] = useState(video?.isLike);
+  const [isFollow, setIsFollow] = useState(video?.isFollow);
+  const [likeCount, setLikeCount] = useState(video?._count?.likes);
+
+  const { mutateAsync } = trpc.like.likeVideo.useMutation({
+    onError: () => {
+      toast.error("Something went wrong!");
+      setIsLike((prev) => !prev);
+    },
+  });
+
+  const { mutateAsync: toggleFollowMutate } =
+    trpc.follow.followUser.useMutation({
+      onError: () => {
+        toast.error("Something went wrong!");
+        setIsFollow((prev) => !prev);
+      },
+    });
+
+  const toggleLike = () => {
+    if (!data?.user) {
+      toast.error("You need to login!");
+      return;
+    }
+
+    mutateAsync({ videoId: video?.id });
+    setIsLike((prev) => !prev);
+    if (isLike) {
+      setLikeCount((prev) => prev - 1);
+    } else {
+      setLikeCount((prev) => prev + 1);
+    }
+  };
+
+  const toggleFollow = () => {
+    if (!data?.user) {
+      toast.error("You need to login!");
+      return;
+    }
+
+    if (video?.userId === data?.user?.id) {
+      return;
+    }
+
+    toggleFollowMutate({ followingId: video?.userId });
+    setIsFollow((prev) => !prev);
+  };
 
   return (
     <div className="relative w-full border-l border-[#2f2f2f] lg:w-[544px]">
-      <div className="px-5 pb-5 pt-5 lg:pt-[54px]">
+      <div className="px-4 pb-5 pt-4 lg:px-5 lg:pt-[54px]">
         <div className="flex items-center justify-between">
           <Tippy
             delay={300}
@@ -52,8 +115,15 @@ const VideoInfo: React.FC<VideoInfoProps> = ({ video }) => {
             </div>
           </Tippy>
           {data?.user?.id !== video?.userId && (
-            <button className="rounded-[4px] border border-primary px-6 py-1.5 text-sm font-semibold text-primary">
-              Follow
+            <button
+              onClick={toggleFollow}
+              className={`rounded-[4px] ${
+                isFollow
+                  ? "bg-[#2f2f2f] text-white"
+                  : "border border-primary text-primary"
+              } px-6 py-1.5 text-sm font-semibold`}
+            >
+              {isFollow ? "Following" : "Follow"}
             </button>
           )}
         </div>
@@ -68,15 +138,15 @@ const VideoInfo: React.FC<VideoInfoProps> = ({ video }) => {
         </div>
         <div className="mt-5 flex items-center justify-between">
           <div className="flex items-center">
-            <div className="mr-4 flex items-center">
+            <div onClick={toggleLike} className="mr-4 flex items-center">
               <div className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full bg-[#2f2f2f]">
                 <BsFillHeartFill
                   fontSize={15}
-                  // className={`${isLike ? "text-primary" : "text-white"}`}
+                  className={`${isLike ? "text-primary" : "text-white"}`}
                 />
               </div>
               <p className="ml-2 text-[12px] font-normal text-[#fffffb]">
-                {video?._count?.likes}
+                {likeCount}
               </p>
             </div>
             <div className="flex items-center">
@@ -90,13 +160,10 @@ const VideoInfo: React.FC<VideoInfoProps> = ({ video }) => {
           </div>
 
           <div className="flex items-center">
-            <div className="mr-2 flex h-7 w-7 items-center justify-center rounded-full bg-[#2f2f2f] last:mr-0">
-              <BsLink45Deg className="h-5 w-5 text-white" />
-            </div>
-
             {providers?.map((provider) => (
               <Link
-                href={"#"}
+                target="_blank"
+                href={provider?.link(copyLink, video?.title)}
                 className="mr-2 h-7 w-7 cursor-pointer last:mr-0"
               >
                 <LazyLoadImage
@@ -111,9 +178,18 @@ const VideoInfo: React.FC<VideoInfoProps> = ({ video }) => {
 
         <div className="mt-5 flex items-center rounded-sm bg-[#2f2f2f] px-3 py-2">
           <p className="line-clamp-1 mr-4 flex-1 text-sm font-normal">
-            https://www.tiktok.com/@tieens960/video/7172856732274724139
+            {copyLink}
           </p>
-          <button className="text-sm font-semibold">Copy link</button>
+          <button
+            onClick={() =>
+              copyToClipboard(copyLink)
+                ?.then(() => toast.success("Copy success!"))
+                .catch(() => toast.error("Copy failed!"))
+            }
+            className="text-sm font-semibold"
+          >
+            Copy link
+          </button>
         </div>
       </div>
 

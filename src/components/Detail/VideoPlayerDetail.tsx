@@ -17,7 +17,7 @@ const VideoPlayerDetail: React.FC<VideoPlayerDetailProps> = ({ videoUrl }) => {
   const router = useRouter();
 
   return (
-    <div className="sticky top-0 z-[9999] h-full w-full lg:flex-1">
+    <div className="relative z-[9999] h-full w-full lg:flex-1">
       <video
         onWaiting={() => setLoading(true)}
         onCanPlay={() => setLoading(false)}
@@ -35,7 +35,7 @@ const VideoPlayerDetail: React.FC<VideoPlayerDetailProps> = ({ videoUrl }) => {
 
       <div
         onClick={(e) => e.stopPropagation()}
-        className="absolute top-0 left-0 z-[9999] flex items-center p-5"
+        className="absolute top-0 left-0 z-[9999] flex items-center p-2 lg:p-5"
       >
         <div
           onClick={() => router.back()}
