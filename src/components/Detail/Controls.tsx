@@ -31,6 +31,21 @@ const Controls: React.FC<ControlsProps> = ({ videoRef }) => {
     setCurrentTime(percent * videoRef?.current?.duration!);
   };
 
+  const handleSeekTimeMobile = (e: TouchEvent) => {
+    const clientX = e.touches[0]?.clientX!;
+    const left = progressRef.current?.getBoundingClientRect().left;
+    const width = progressRef.current?.getBoundingClientRect().width;
+    const percent = (clientX - left!) / width!;
+
+    document.body.style.userSelect = "none";
+
+    if (videoRef !== null && videoRef?.current !== null) {
+      videoRef.current.currentTime = percent * videoRef.current?.duration!;
+    }
+
+    setCurrentTime(percent * videoRef?.current?.duration!);
+  };
+
   const handlePlayPause = () => {
     if (isPlay && videoRef.current?.play) {
       videoRef.current?.pause();
@@ -41,6 +56,16 @@ const Controls: React.FC<ControlsProps> = ({ videoRef }) => {
     }
   };
 
+  // handle seek when click progressbar
+  useEffect(() => {
+    progressRef?.current?.addEventListener("click", handleSeekTime);
+
+    return () => {
+      progressRef?.current?.addEventListener("click", handleSeekTime);
+    };
+  }, []);
+
+  // handle toggle sound
   useEffect(() => {
     if (isSoundOn) {
       if (videoRef !== null && videoRef?.current !== null) {
@@ -53,10 +78,7 @@ const Controls: React.FC<ControlsProps> = ({ videoRef }) => {
     }
   }, [isSoundOn]);
 
-  useEffect(() => {
-    progressRef.current?.addEventListener("click", handleSeekTime);
-  }, []);
-
+  // handle time update
   useEffect(() => {
     const handleTimeUpdate = () => {
       setCurrentTime(videoRef?.current?.currentTime!);
@@ -69,6 +91,7 @@ const Controls: React.FC<ControlsProps> = ({ videoRef }) => {
     };
   }, []);
 
+  // handle seek time in pc with mouse event
   useEffect(() => {
     progressRef?.current?.addEventListener("mousedown", () => {
       document.addEventListener("mousemove", handleSeekTime);
@@ -81,6 +104,7 @@ const Controls: React.FC<ControlsProps> = ({ videoRef }) => {
     };
   }, []);
 
+  // remove mouse move when mouse up
   useEffect(() => {
     document?.addEventListener("mouseup", () => {
       document.body.style.userSelect = "auto";
@@ -95,6 +119,7 @@ const Controls: React.FC<ControlsProps> = ({ videoRef }) => {
     };
   }, []);
 
+  // handle state isPlay when audio onPlay, onPause
   useEffect(() => {
     videoRef?.current?.addEventListener("play", () => {
       setIsPlay(true);
@@ -111,6 +136,31 @@ const Controls: React.FC<ControlsProps> = ({ videoRef }) => {
 
       videoRef?.current?.removeEventListener("pause", () => {
         setIsPlay(false);
+      });
+    };
+  }, []);
+
+  // handle seek time in mobile with touch event
+  useEffect(() => {
+    progressRef?.current?.addEventListener("touchstart", () => {
+      document.addEventListener("touchmove", handleSeekTimeMobile);
+    });
+
+    return () => {
+      progressRef?.current?.removeEventListener("touchstart", () => {
+        document.addEventListener("touchmove", handleSeekTimeMobile);
+      });
+    };
+  }, []);
+
+  useEffect(() => {
+    progressRef?.current?.addEventListener("touchend", () => {
+      document.removeEventListener("touchmove", handleSeekTimeMobile);
+    });
+
+    return () => {
+      progressRef?.current?.removeEventListener("touchend", () => {
+        document.removeEventListener("touchmove", handleSeekTimeMobile);
       });
     };
   }, []);
@@ -132,7 +182,7 @@ const Controls: React.FC<ControlsProps> = ({ videoRef }) => {
           ref={progressRef}
           className="mx-2 flex-1 cursor-pointer py-3 lg:mx-4"
         >
-          <div className="relative h-[3px] w-full overflow-hidden rounded-sm bg-gray-600">
+          <div className="relative h-[3px] w-full overflow-hidden rounded-sm bg-[#2f2f2f]">
             <div
               style={{
                 width: `${(currentTime * 100) / videoRef?.current?.duration!}%`,
