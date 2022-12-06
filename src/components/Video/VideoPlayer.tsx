@@ -1,17 +1,14 @@
 import React, { useState, useRef, useEffect } from "react";
 import { BsFillHeartFill } from "react-icons/bs";
 import { AiFillMessage } from "react-icons/ai";
-import { GiPauseButton } from "react-icons/gi";
 import { IoMdShareAlt } from "react-icons/io";
-import { FaPlay } from "react-icons/fa";
-import SoundOn from "../../icons/SoundOn";
 import { Spin } from "react-cssfx-loading";
 import useStore from "../../stored/sound";
-import SoundOff from "../../icons/SoundOff";
 import { trpc } from "../../utils/trpc";
 import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 import Link from "next/link";
+import Controls from "../Detail/Controls";
 
 interface VideoPlayerProps {
   videoUrl: string;
@@ -32,24 +29,18 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   likeCount,
   id,
 }) => {
-  const [isPlay, setIsPlay] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isLike, setIslike] = useState(like);
   const [likes, setLikes] = useState(likeCount);
 
+  useEffect(() => {
+    setIslike(like);
+    setLikes(likeCount);
+  }, [like, likeCount]);
+
   const { isSound, setSound } = useStore();
 
-  const handlePlayPause = () => {
-    if (isPlay && videoRef.current?.play) {
-      videoRef.current?.pause();
-      setIsPlay(false);
-    } else {
-      videoRef.current?.play();
-      setIsPlay(true);
-    }
-  };
-
-  const videoRef = useRef<any>();
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const { mutateAsync } = trpc.like.likeVideo.useMutation({
     onError: () => {
@@ -57,14 +48,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
       setIslike((prev) => !prev);
     },
   });
-
-  useEffect(() => {
-    if (isSound) {
-      videoRef.current.muted = false;
-    } else {
-      videoRef.current.muted = true;
-    }
-  }, [isSound]);
 
   const { data } = useSession();
 
@@ -82,26 +65,20 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
     mutateAsync({ videoId: videoId });
   };
 
-  useEffect(() => {
-    videoRef.current.volume = 0.3;
-  }, []);
-
   return (
-    <div className="flex items-end">
+    <div className="relative flex items-end">
       <Link
         href={`/video/${id}`}
         className={`mt-3 ${
           height > width * 1.3
-            ? "aspect-[9/16] w-[289px]"
-            : "aspect-[9/16] w-[289px] lg:aspect-[16/9] lg:w-full lg:flex-1"
+            ? "aspect-[9/16] md:w-[289px]"
+            : "aspect-[9/16] md:w-[289px] lg:aspect-[16/9] lg:w-full lg:flex-1"
         } relative max-w-full overflow-hidden rounded-md bg-[#222]`}
       >
         <video
           loop
           onCanPlay={() => setLoading(false)}
           onWaiting={() => setLoading(true)}
-          onPlayCapture={() => setIsPlay(true)}
-          onPauseCapture={() => setIsPlay(false)}
           ref={videoRef}
           className="h-full w-full rounded-md"
           src={videoUrl}
@@ -113,24 +90,10 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
           </div>
         )}
 
-        <div
-          onClick={(e) => e.preventDefault()}
-          className="absolute bottom-0 left-0 right-0 flex items-center justify-between p-5"
-        >
-          <div onClick={handlePlayPause} className="cursor-pointer">
-            {isPlay ? (
-              <GiPauseButton fontSize={20} />
-            ) : (
-              <FaPlay fontSize={20} />
-            )}
-          </div>
-          <div onClick={setSound} className="cursor-pointer">
-            {isSound ? <SoundOn /> : <SoundOff />}
-          </div>
-        </div>
+        <Controls isSoundOn={isSound} setSound={setSound} videoRef={videoRef} />
       </Link>
 
-      <div className="ml-5">
+      <div className="absolute right-0 bottom-[70px] ml-5 pr-2 md:static md:pr-0">
         <div className="mb-4 flex flex-col items-center">
           <div
             onClick={handleLike}

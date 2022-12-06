@@ -12,22 +12,21 @@ const Account = () => {
   const { data } = useSession();
 
   return (
-    <div className="flex items-center">
-      <button className="flex min-w-[100px] items-center rounded-[2px] bg-[#2f2f2f] py-1.5 px-4 text-white">
+    <div className="hidden items-center md:flex">
+      <Link
+        href="/upload"
+        className="flex min-w-[100px] items-center rounded-[2px] bg-[#2f2f2f] py-1.5 px-4 text-white"
+      >
         <Plus />
-        <Link
-          href="/upload"
-          className="ml-2 inline-block text-[16px] font-medium"
-        >
-          Upload
-        </Link>
-      </button>
+        <p className="ml-2 inline-block text-[16px] font-medium">Upload</p>
+      </Link>
       {!data?.user ? (
-        <button className="ml-4 flex min-w-[100px] items-center justify-center rounded-[4px] bg-primary py-1.5 px-4 text-center text-white">
-          <Link href="/sign-in" className="text-[16px] font-medium">
-            Log in
-          </Link>
-        </button>
+        <Link
+          href="/sign-in"
+          className="ml-4 flex min-w-[100px] items-center justify-center rounded-[4px] bg-primary py-1.5 px-4 text-center text-[16px] font-medium text-white"
+        >
+          Log in
+        </Link>
       ) : (
         <Tippy
           interactive
@@ -36,7 +35,10 @@ const Account = () => {
             <div {...attrs} className="overflow-hidden rounded-md bg-[#222]">
               <ul>
                 <li className="border-b border-gray-600 py-2 pl-4 pr-8 transition-colors hover:bg-[#333]">
-                  <Link href="/" className="flex items-center font-normal">
+                  <Link
+                    href={`/account/${data?.user?.id}`}
+                    className="flex items-center font-normal"
+                  >
                     <AiOutlineUser fontSize={20} className="mr-2" /> View
                     profile
                   </Link>

@@ -7,7 +7,7 @@ const Home: NextPage = () => {
   return (
     <MainLayout>
       <Sidebar />
-      <div className="ml-[348px] mt-5 flex-1">
+      <div className="flex-1 md:ml-[348px] lg:mt-5">
         <Main />
       </div>
     </MainLayout>

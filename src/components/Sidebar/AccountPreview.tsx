@@ -10,7 +10,7 @@ interface AccountPreviewProps {
 
 const AccountPreview: React.FC<AccountPreviewProps> = ({ account }) => {
   return (
-    <div className="w-[320px] rounded-[10px] bg-[#333] p-4">
+    <div className="hidden w-[320px] rounded-[10px] bg-[#333] p-4 lg:block">
       <div className="flex items-center justify-between">
         <div className="mr-3 h-10 w-10">
           <LazyLoadImage

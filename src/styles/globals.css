@@ -36,7 +36,7 @@ img {
 
 .container {
   width: 1150px;
-  max-width: calc(100% - 32px);
+  max-width: 100%;
   margin-right: auto;
   margin-left: auto;
 }
@@ -44,6 +44,7 @@ img {
 /* width */
 ::-webkit-scrollbar {
   width: 6px;
+  display: none;
 }
 
 /* Track */
@@ -55,14 +56,6 @@ img {
 ::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.08);
   border-radius: 4px;
-}
-
-.scroll-bar-hover::-webkit-scrollbar {
-  display: none;
-}
-
-.scroll-bar-hover:hover::-webkit-scrollbar {
-  display: block;
 }
 
 .line-clamp-3,

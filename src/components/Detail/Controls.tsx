@@ -7,11 +7,18 @@ import { FaPlay } from "react-icons/fa";
 
 interface ControlsProps {
   videoRef: React.MutableRefObject<HTMLVideoElement | null>;
+  showSeekTime?: boolean;
+  setSound: Function;
+  isSoundOn: boolean;
 }
 
-const Controls: React.FC<ControlsProps> = ({ videoRef }) => {
+const Controls: React.FC<ControlsProps> = ({
+  videoRef,
+  showSeekTime,
+  isSoundOn,
+  setSound,
+}) => {
   const [currentTime, setCurrentTime] = useState(0);
-  const [isSoundOn, setIsSoundOn] = useState(true);
   const [isPlay, setIsPlay] = useState(false);
 
   const progressRef = useRef<HTMLDivElement | null>(null);
@@ -167,8 +174,11 @@ const Controls: React.FC<ControlsProps> = ({ videoRef }) => {
 
   return (
     <div
-      className="absolute bottom-0 left-0 right-0 z-[9999] flex items-center p-2 lg:p-5"
-      onClick={(e) => e.stopPropagation()}
+      className="absolute bottom-0 left-0 right-0 z-[9998] flex items-center p-2 lg:p-5"
+      onClick={(e) => {
+        e.stopPropagation();
+        e.preventDefault();
+      }}
     >
       <div className="flex flex-1 items-center">
         <div
@@ -177,26 +187,36 @@ const Controls: React.FC<ControlsProps> = ({ videoRef }) => {
         >
           {isPlay ? <GiPauseButton fontSize={15} /> : <FaPlay fontSize={15} />}
         </div>
-        <p className="text-sm font-semibold">{formatVideoTime(currentTime)}</p>
+
         <div
-          ref={progressRef}
-          className="mx-2 flex-1 cursor-pointer py-3 lg:mx-4"
+          style={{ display: showSeekTime ? "flex" : "none" }}
+          className="flex flex-1 items-center"
         >
-          <div className="relative h-[3px] w-full overflow-hidden rounded-sm bg-[#2f2f2f]">
-            <div
-              style={{
-                width: `${(currentTime * 100) / videoRef?.current?.duration!}%`,
-              }}
-              className={`absolute top-0 bottom-0 bg-white`}
-            />
+          <p className="text-sm font-semibold">
+            {formatVideoTime(currentTime)}
+          </p>
+          <div
+            ref={progressRef}
+            className="mx-2 flex-1 cursor-pointer py-3 lg:mx-4"
+          >
+            <div className="relative h-[3px] w-full overflow-hidden rounded-sm bg-[#2f2f2f]">
+              <div
+                style={{
+                  width: `${
+                    (currentTime * 100) / videoRef?.current?.duration!
+                  }%`,
+                }}
+                className={`absolute top-0 bottom-0 bg-white`}
+              />
+            </div>
           </div>
+          <p className="text-sm font-semibold">
+            {formatVideoTime(videoRef?.current?.duration!)}
+          </p>
         </div>
-        <p className="text-sm font-semibold">
-          {formatVideoTime(videoRef?.current?.duration!)}
-        </p>
       </div>
       <div
-        onClick={() => setIsSoundOn((prev) => !prev)}
+        onClick={() => setSound()}
         className="ml-2 flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-full bg-[#2f2f2f] lg:ml-5"
       >
         {isSoundOn ? <SoundOn /> : <SoundOff />}

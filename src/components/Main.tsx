@@ -72,7 +72,7 @@ const Main = () => {
     );
 
   return (
-    <div className="px-5 pb-5">
+    <div className="pb-5 md:px-5">
       {isLoading && (
         <div className="mt-5 flex w-full items-center justify-center">
           <Spin color="#FF3B5C" />
@@ -96,7 +96,7 @@ const Main = () => {
           }
         }}
       >
-        {({ ref }) => <div ref={ref} className="mt-4 flex h-10 w-full" />}
+        {({ ref }) => <div ref={ref} className="flex h-10 w-full" />}
       </InView>
     </div>
   );

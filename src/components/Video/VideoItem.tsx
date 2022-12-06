@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { FcMusic } from "react-icons/fc";
 import VideoPlayer from "./VideoPlayer";
@@ -24,6 +24,12 @@ const VideoItem: React.FC<VideoItemProps> = ({ video, refetch }) => {
     },
   });
 
+  const [isFollow, setIsFollow] = useState(video?.isFollow);
+
+  useEffect(() => {
+    setIsFollow(video?.isFollow);
+  }, [video?.isFollow]);
+
   const { data } = useSession();
 
   const handleToggleFollow = () => {
@@ -32,6 +38,7 @@ const VideoItem: React.FC<VideoItemProps> = ({ video, refetch }) => {
       return;
     }
     if (video?.user?.id === data?.user?.id) return;
+    setIsFollow((prev) => !prev);
     mutateAsync({ followingId: video?.user?.id });
   };
 
@@ -40,7 +47,7 @@ const VideoItem: React.FC<VideoItemProps> = ({ video, refetch }) => {
       <div className="flex">
         <Link
           href={`/account/${video?.user?.id}`}
-          className="block h-[56px] w-[56px]"
+          className="hidden h-[56px] w-[56px] lg:block"
         >
           <LazyLoadImage
             className="rounded-full"
@@ -49,20 +56,51 @@ const VideoItem: React.FC<VideoItemProps> = ({ video, refetch }) => {
           />
         </Link>
 
-        <div className="ml-3 flex-1">
-          <Link href={`/account/${video?.user?.id}`}>
-            <div className="flex items-center">
-              <h3 className="line-clamp-1 text-[16px] font-bold hover:underline">
-                @
-                {removeAccents(
-                  video?.user?.name?.toLocaleLowerCase().split(" ").join("")
-                )}
-              </h3>
-              <p className="line-clamp-1 ml-2 text-sm text-[rgba(255,255,255,0.75)] hover:underline">
-                {video?.user?.name}
-              </p>
+        <div className="mx-3 flex-1">
+          <div>
+            <div className="flex items-start justify-between">
+              <Link
+                href={`/account/${video?.user?.id}`}
+                className="flex items-center"
+              >
+                <Link
+                  href={`/account/${video?.user?.id}`}
+                  className="mr-3 block h-[56px] w-[56px] lg:hidden"
+                >
+                  <LazyLoadImage
+                    className="rounded-full"
+                    effect="opacity"
+                    src={video?.user?.image}
+                  />
+                </Link>
+                <div className="flex flex-col md:flex-row md:items-center">
+                  <h3 className="line-clamp-1 text-[16px] font-bold hover:underline">
+                    @
+                    {removeAccents(
+                      video?.user?.name?.toLocaleLowerCase().split(" ").join("")
+                    )}
+                  </h3>
+                  <p className="line-clamp-1 text-sm text-[rgba(255,255,255,0.75)] hover:underline md:ml-2">
+                    {video?.user?.name}
+                  </p>
+                </div>
+              </Link>
+              <button
+                disabled={video?.user?.id === data?.user?.id}
+                onClick={handleToggleFollow}
+                className={`rounded-[2px] border ${
+                  isFollow
+                    ? "border-transparent text-white"
+                    : "border-primary text-primary"
+                } bg-[#2f2f2f] py-1 ${
+                  video?.user?.id === data?.user?.id &&
+                  "cursor-not-allowed opacity-0"
+                } mt-3 block px-4 text-[15px] font-semibold md:hidden lg:mt-0 lg:ml-4`}
+              >
+                {isFollow ? "Following" : "Follow"}
+              </button>
             </div>
-          </Link>
+          </div>
           <p className="line-clamp-2 mt-2 text-sm font-normal">
             {video?.title}
           </p>
@@ -82,19 +120,18 @@ const VideoItem: React.FC<VideoItemProps> = ({ video, refetch }) => {
           />
         </div>
       </div>
-
       <button
         disabled={video?.user?.id === data?.user?.id}
         onClick={handleToggleFollow}
         className={`rounded-[2px] border ${
-          video.isFollow
+          isFollow
             ? "border-transparent text-white"
             : "border-primary text-primary"
         } bg-[#2f2f2f] py-1 ${
-          video?.user?.id === data?.user?.id && "cursor-not-allowed opacity-60"
-        } px-4 text-[15px] font-semibold`}
+          video?.user?.id === data?.user?.id && "cursor-not-allowed opacity-0"
+        } hidden px-4 text-[15px] font-semibold md:block`}
       >
-        {video.isFollow ? "Following" : "Follow"}
+        {isFollow ? "Following" : "Follow"}
       </button>
     </div>
   );

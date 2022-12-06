@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import { CircularProgress } from "react-cssfx-loading";
 import { BiArrowBack } from "react-icons/bi";
 import LogoRadius from "../../icons/LogoRadius";
@@ -12,7 +12,9 @@ interface VideoPlayerDetailProps {
 
 const VideoPlayerDetail: React.FC<VideoPlayerDetailProps> = ({ videoUrl }) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
+
   const [loading, setLoading] = useState(false);
+  const [isSoundOn, setIsSoundOn] = useState(true);
 
   const router = useRouter();
 
@@ -48,7 +50,12 @@ const VideoPlayerDetail: React.FC<VideoPlayerDetailProps> = ({ videoUrl }) => {
           <LogoRadius />
         </Link>
       </div>
-      <Controls videoRef={videoRef!} />
+      <Controls
+        setSound={() => setIsSoundOn((prev) => !prev)}
+        isSoundOn={isSoundOn}
+        showSeekTime
+        videoRef={videoRef!}
+      />
     </div>
   );
 };

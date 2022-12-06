@@ -5,6 +5,7 @@ import Tippy from "@tippyjs/react/headless";
 import AccountPreview from "./AccountPreview";
 import { Account } from "../../types";
 import { removeAccents } from "../../utils/contants";
+import Link from "next/link";
 
 interface AccountSidebarItemProps {
   account: Account;
@@ -19,7 +20,10 @@ const AccountSidebarItem: React.FC<AccountSidebarItemProps> = ({ account }) => {
       interactive
       render={(attrs) => <AccountPreview account={account} {...attrs} />}
     >
-      <div className="flex cursor-pointer items-center p-2">
+      <Link
+        href={`/account/${account?.id}`}
+        className="flex cursor-pointer items-center p-2"
+      >
         <div className="mr-3 h-8 w-8">
           <LazyLoadImage
             className="rounded-full"
@@ -41,7 +45,7 @@ const AccountSidebarItem: React.FC<AccountSidebarItemProps> = ({ account }) => {
             {account?.name}
           </p>
         </div>
-      </div>
+      </Link>
     </Tippy>
   );
 };

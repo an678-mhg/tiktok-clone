@@ -19,7 +19,7 @@ const AccountSidebar: React.FC<AccountSidebarProps> = ({ title, type }) => {
 
   return (
     <div className="border-t border-[#484848] py-4">
-      <h3 className="mb-2 px-2 text-sm font-medium">{title}</h3>
+      <h3 className="mb-2 hidden px-2 text-sm font-medium lg:block">{title}</h3>
       <div>
         {data?.accounts?.map((item) => (
           <AccountSidebarItem account={item as Account} key={item.id} />
