@@ -4,7 +4,7 @@ import React, { useRef, useState } from "react";
 import { CircularProgress } from "react-cssfx-loading";
 import { BiArrowBack } from "react-icons/bi";
 import LogoRadius from "../../icons/LogoRadius";
-import Controls from "./Controls";
+import Controls from "../Controls";
 
 interface VideoPlayerDetailProps {
   videoUrl: string;

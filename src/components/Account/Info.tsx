@@ -38,7 +38,7 @@ const Info: React.FC<InfoProps> = ({ profile, isFollow }) => {
   };
 
   return (
-    <div className="px-4 lg:px-0">
+    <div className="px-4 xl:px-0">
       <div className="flex items-center">
         <div className="h-[116px] w-[116px]">
           <LazyLoadImage
@@ -47,8 +47,8 @@ const Info: React.FC<InfoProps> = ({ profile, isFollow }) => {
             effect="opacity"
           />
         </div>
-        <div className="ml-5">
-          <h1 className="text-[25px] font-semibold">
+        <div className="ml-5 flex-1">
+          <h1 className="text-[20px] font-semibold">
             @
             {removeAccents(
               profile?.name?.toLocaleLowerCase().split(" ").join("")

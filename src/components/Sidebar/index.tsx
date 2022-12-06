@@ -8,7 +8,9 @@ const Sidebar = () => {
   const { data } = useSession();
 
   return (
-    <div className="scroll-bar-hover fixed top-[56px] bottom-0 left-[100%] z-[999] w-[348px] overflow-y-scroll border-r border-[#2f2f2f] bg-[#121212] pt-5 pl-2 md:left-auto lg:mr-[6px] lg:border-none">
+    <div
+      className={`fixed top-[56px] left-[-100%] bottom-0 z-[9998] w-full overflow-y-scroll border-r border-[#2f2f2f] bg-[#121212] pt-5 pl-2 md:left-auto md:w-[348px] lg:mr-[6px] lg:border-none`}
+    >
       <Menu />
       {!data?.user && <LoginButton />}
 

@@ -31,7 +31,7 @@ const AccountSidebarItem: React.FC<AccountSidebarItemProps> = ({ account }) => {
             src={account?.image}
           />
         </div>
-        <div>
+        <div className="flex-1">
           <h3 className="mt-[-2px] flex items-center text-[16px] font-bold">
             @
             {removeAccents(

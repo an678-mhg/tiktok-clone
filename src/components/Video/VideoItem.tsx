@@ -43,7 +43,7 @@ const VideoItem: React.FC<VideoItemProps> = ({ video, refetch }) => {
   };
 
   return (
-    <div className="flex items-start justify-between border-b border-[#2f2f2f] py-5">
+    <div className="flex items-start justify-between border-b border-[#2f2f2f] py-5 sm:pr-0 md:pr-2 lg:pr-0">
       <div className="flex">
         <Link
           href={`/account/${video?.user?.id}`}

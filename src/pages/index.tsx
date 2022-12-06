@@ -8,7 +8,7 @@ const Home: NextPage = () => {
     <MainLayout>
       <Sidebar />
       <div className="flex-1 md:ml-[348px] lg:mt-5">
-        <Main />
+        <Main type="getVideos" />
       </div>
     </MainLayout>
   );

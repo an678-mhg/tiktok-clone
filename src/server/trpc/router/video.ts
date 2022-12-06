@@ -76,4 +76,66 @@ export const videoRouter = router({
             : skip + input?.limit!,
       };
     }),
+  getFollowingVideos: protectedProcedure
+    .input(
+      z.object({ cursor: z.number().nullish(), limit: z.number().nullable() })
+    )
+    .query(async ({ ctx, input }) => {
+      const skip = input?.cursor || 0;
+
+      const followings = await prisma?.follow?.findMany({
+        where: {
+          followerId: ctx?.session?.user?.id!,
+        },
+      });
+
+      const videos = await ctx.prisma.video.findMany({
+        where: {
+          userId: { in: followings?.map((item) => item.followingId) },
+        },
+        include: { user: true, _count: { select: { likes: true } } },
+        orderBy: { updatedAt: "desc" },
+        take: input?.limit || 5,
+        skip,
+      });
+
+      let likes: Likes[] = [];
+      let follows: Follow[] = [];
+
+      if (ctx.session?.user) {
+        const [likeByMe, followByMe] = await Promise.all([
+          ctx.prisma.likes.findMany({
+            where: {
+              userId: ctx.session.user.id,
+              videoId: { in: videos.map((item) => item.id) },
+            },
+          }),
+          ctx.prisma.follow.findMany({
+            where: {
+              followerId: ctx.session.user.id,
+              followingId: { in: videos.map((item) => item.user?.id!) },
+            },
+          }),
+        ]);
+
+        likes = likeByMe;
+        follows = followByMe;
+      }
+
+      return {
+        videos: videos.map((item) => ({
+          ...item,
+          isLike: likes.some((like) => item.id === like.videoId),
+          isFollow: follows.some(
+            (follow) => item.user?.id === follow.followingId
+          ),
+        })),
+        hasNextPage:
+          videos.length < ((input?.limit as number) || 5) ? false : true,
+        nextSkip:
+          videos?.length < ((input?.limit as number) || 5)
+            ? null
+            : skip + input?.limit!,
+      };
+    }),
 });

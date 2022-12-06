@@ -4,7 +4,7 @@ import Plus from "../../icons/Plus";
 import { useSession } from "next-auth/react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import Tippy from "@tippyjs/react/headless";
-import { AiOutlineUser } from "react-icons/ai";
+import { AiOutlineLogin, AiOutlineUser } from "react-icons/ai";
 import { CiLogin } from "react-icons/ci";
 import { signOut } from "next-auth/react";
 
@@ -12,20 +12,25 @@ const Account = () => {
   const { data } = useSession();
 
   return (
-    <div className="hidden items-center md:flex">
+    <div className="flex items-center">
       <Link
         href="/upload"
-        className="flex min-w-[100px] items-center rounded-[2px] bg-[#2f2f2f] py-1.5 px-4 text-white"
+        className="flex items-center rounded-[2px] bg-[#2f2f2f] py-1.5 px-4 text-white md:min-w-[100px]"
       >
         <Plus />
-        <p className="ml-2 inline-block text-[16px] font-medium">Upload</p>
+        <p className="ml-2 hidden text-[16px] font-medium md:inline-block">
+          Upload
+        </p>
       </Link>
       {!data?.user ? (
         <Link
           href="/sign-in"
-          className="ml-4 flex min-w-[100px] items-center justify-center rounded-[4px] bg-primary py-1.5 px-4 text-center text-[16px] font-medium text-white"
+          className="ml-4 flex items-center justify-center rounded-[4px] bg-primary py-1.5 px-4 text-center text-[16px] font-medium text-white md:min-w-[100px]"
         >
-          Log in
+          <AiOutlineLogin />
+          <p className="ml-2 hidden text-[16px] font-medium md:inline-block">
+            Login
+          </p>
         </Link>
       ) : (
         <Tippy

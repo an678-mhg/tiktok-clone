@@ -3,12 +3,12 @@ import { BsFillHeartFill } from "react-icons/bs";
 import { AiFillMessage } from "react-icons/ai";
 import { IoMdShareAlt } from "react-icons/io";
 import { Spin } from "react-cssfx-loading";
-import useStore from "../../stored/sound";
+import useStore from "../../stored/app";
 import { trpc } from "../../utils/trpc";
 import { useSession } from "next-auth/react";
 import toast from "react-hot-toast";
 import Link from "next/link";
-import Controls from "../Detail/Controls";
+import Controls from "../Controls";
 
 interface VideoPlayerProps {
   videoUrl: string;

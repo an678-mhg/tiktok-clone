@@ -16,7 +16,7 @@ import {
 import { trpc } from "../../utils/trpc";
 import AccountPreview from "../Sidebar/AccountPreview";
 import CommentItem from "./CommentItem";
-import SelectEmoji from "./SelectEmoji";
+import SelectEmoji from "../SelectEmoji";
 
 interface VideoInfoProps {
   video: Video<Account>;
@@ -162,6 +162,7 @@ const VideoInfo: React.FC<VideoInfoProps> = ({ video, host }) => {
           <div className="flex items-center">
             {providers?.map((provider) => (
               <Link
+                key={provider.name}
                 target="_blank"
                 href={provider?.link(copyLink, video?.title)}
                 className="mr-2 h-7 w-7 cursor-pointer last:mr-0"

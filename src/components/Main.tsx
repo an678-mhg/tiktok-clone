@@ -4,8 +4,13 @@ import { trpc } from "../utils/trpc";
 import VideoItem from "../components/Video/VideoItem";
 import { Spin } from "react-cssfx-loading";
 import { InView } from "react-intersection-observer";
+import { useRouter } from "next/router";
 
-const Main = () => {
+interface MainProps {
+  type: "getFollowingVideos" | "getVideos";
+}
+
+const Main: React.FC<MainProps> = ({ type }) => {
   const {
     data,
     isLoading,
@@ -13,13 +18,16 @@ const Main = () => {
     isFetchingNextPage,
     hasNextPage,
     fetchNextPage,
-  } = trpc.video.getVideos.useInfiniteQuery(
+    isError,
+  } = trpc.video[type].useInfiniteQuery(
     { limit: 5 },
     {
       getNextPageParam: (lastPage) => lastPage.nextSkip,
       refetchOnWindowFocus: false,
     }
   );
+
+  const router = useRouter();
 
   const observer = useRef<IntersectionObserver | null>(null);
 
@@ -64,7 +72,20 @@ const Main = () => {
     videoElements.forEach((item) => {
       observer.current?.observe(item);
     });
-  }, [data?.pages?.length, isLoading]);
+  }, [data?.pages?.length, isLoading, router.asPath]);
+
+  if (isError)
+    return (
+      <div className="my-4 flex-grow text-center">Failed to load video</div>
+    );
+
+  if (isLoading) {
+    return (
+      <div className="mt-5 flex w-full items-center justify-center">
+        <Spin color="#FF3B5C" />
+      </div>
+    );
+  }
 
   if (data?.pages?.length === 0 || data?.pages[0]?.videos?.length === 0)
     return (
@@ -72,12 +93,7 @@ const Main = () => {
     );
 
   return (
-    <div className="pb-5 md:px-5">
-      {isLoading && (
-        <div className="mt-5 flex w-full items-center justify-center">
-          <Spin color="#FF3B5C" />
-        </div>
-      )}
+    <div className="pb-5 lg:px-5">
       {data?.pages?.map((page) =>
         page?.videos?.map((video) => (
           <VideoItem

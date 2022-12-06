@@ -50,9 +50,9 @@ const VideoList: React.FC<VideoListProps> = ({ profile }) => {
       {videos?.length === 0 && (
         <h3 className="mt-5 w-full text-center">There is no video yet</h3>
       )}
-      <div className="mt-5 grid grid-cols-3 gap-2 px-4 md:grid-cols-4 lg:grid-cols-5 lg:px-0 xl:grid-cols-6">
+      <div className="mt-5 grid grid-cols-3 gap-2 px-4 pb-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 xl:px-0">
         {videos.map((video) => (
-          <Link className="block" href={`/video/${video?.id}`}>
+          <Link key={video.id} className="block" href={`/video/${video?.id}`}>
             <div>
               <div className="aspect-[9/16] overflow-hidden rounded-md">
                 <LazyLoadImage
