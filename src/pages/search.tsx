@@ -1,0 +1,90 @@
+import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
+import React, { useState } from "react";
+import VideoSmall from "../components/Video/VideoSmall";
+import MainLayout from "../layout/MainLayout";
+import { VideoDefault } from "../types";
+
+interface SearchProps {
+  videos: VideoDefault[];
+  keyword: string;
+}
+
+const Search: NextPage<SearchProps> = ({ videos, keyword }) => {
+  const [searchType, setSearchType] = useState<"videos" | "accounts">("videos");
+
+  return (
+    <MainLayout>
+      <div className="w-full px-4 pb-5">
+        <ul className="mt-1 flex w-full items-center justify-center border-b border-[#2f2f2f]">
+          <li
+            onClick={() => setSearchType("videos")}
+            className={`${
+              searchType === "videos"
+                ? "border-b border-white"
+                : "text-gray-500"
+            } cursor-pointer px-4 pb-4 pt-5 text-sm font-semibold`}
+          >
+            Videos
+          </li>
+          <li
+            onClick={() => setSearchType("accounts")}
+            className={`${
+              searchType === "accounts"
+                ? "border-b border-white"
+                : "text-gray-500"
+            } cursor-pointer px-4 pb-4 pt-5 text-sm font-semibold`}
+          >
+            Accounts
+          </li>
+        </ul>
+
+        {searchType === "videos" ? (
+          <>
+            {videos?.length === 0 && (
+              <h3 className="mt-5 w-full text-center">
+                No videos found by keyword {`"${keyword}"`}
+              </h3>
+            )}
+            <div className="mt-5 grid grid-cols-3 gap-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+              {videos?.map((item) => (
+                <VideoSmall key={item?.id} video={item} />
+              ))}
+            </div>
+          </>
+        ) : (
+          <div>Type account</div>
+        )}
+      </div>
+    </MainLayout>
+  );
+};
+
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const keyword = context?.query?.keyword as string;
+
+  try {
+    const videos = await prisma?.video?.findMany({
+      where: {
+        title: {
+          search: keyword,
+        },
+      },
+    });
+
+    return {
+      props: {
+        videos: JSON.parse(JSON.stringify(videos)),
+        keyword,
+      },
+    };
+  } catch (error) {
+    return {
+      props: {},
+      notFound: true,
+    };
+  }
+};
+
+export default Search;

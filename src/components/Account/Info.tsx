@@ -58,7 +58,7 @@ const Info: React.FC<InfoProps> = ({ profile, isFollow }) => {
           {data?.user?.id !== profile?.id && (
             <button
               onClick={toggleFollow}
-              className={`mt-4 w-full rounded-md ${
+              className={`mt-4 rounded-md ${
                 followByMe ? "bg-[#2f2f2f]" : "bg-primary"
               } px-6 py-1 text-[16px] font-semibold`}
             >

@@ -2,6 +2,7 @@ import Link from "next/link";
 import React, { useMemo, useState } from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Profile } from "../../types";
+import VideoSmall from "../Video/VideoSmall";
 
 interface VideoListProps {
   profile: Profile;
@@ -52,20 +53,7 @@ const VideoList: React.FC<VideoListProps> = ({ profile }) => {
       )}
       <div className="mt-5 grid grid-cols-3 gap-2 px-4 pb-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 xl:px-0">
         {videos.map((video) => (
-          <Link key={video.id} className="block" href={`/video/${video?.id}`}>
-            <div>
-              <div className="aspect-[9/16] overflow-hidden rounded-md">
-                <LazyLoadImage
-                  className="aspect-[9/16]"
-                  src={video?.videoUrl?.split(".mp4")[0] + ".jpg"}
-                  effect="opacity"
-                />
-              </div>
-              <h3 className="line-clamp-1 mt-2 text-sm font-normal">
-                {video?.title}
-              </h3>
-            </div>
-          </Link>
+          <VideoSmall key={video?.id} video={video} />
         ))}
       </div>
     </>

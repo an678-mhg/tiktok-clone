@@ -13,7 +13,7 @@ const Following: NextPage = () => {
   return (
     <MainLayout>
       <Sidebar />
-      <div className="flex-1 md:ml-[348px] lg:mt-5">
+      <div className="ml-[48px] flex-1 md:ml-[348px] lg:mt-5">
         <Main type="getFollowingVideos" />
       </div>
     </MainLayout>

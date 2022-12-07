@@ -63,16 +63,13 @@ const VideoItem: React.FC<VideoItemProps> = ({ video, refetch }) => {
                 href={`/account/${video?.user?.id}`}
                 className="flex items-center"
               >
-                <Link
-                  href={`/account/${video?.user?.id}`}
-                  className="mr-3 block h-[56px] w-[56px] lg:hidden"
-                >
+                <div className="mr-3 block h-[56px] w-[56px] lg:hidden">
                   <LazyLoadImage
                     className="rounded-full"
                     effect="opacity"
                     src={video?.user?.image}
                   />
-                </Link>
+                </div>
                 <div className="flex flex-col md:flex-row md:items-center">
                   <h3 className="line-clamp-1 text-[16px] font-bold hover:underline">
                     @

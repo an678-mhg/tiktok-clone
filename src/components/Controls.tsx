@@ -22,7 +22,7 @@ const Controls: React.FC<ControlsProps> = ({
 }) => {
   const [currentTime, setCurrentTime] = useState(0);
   const [isPlay, setIsPlay] = useState(false);
-  const [volume, setVolume] = useState(0.5);
+  const [volume, setVolume] = useState(1);
 
   const progressRef = useRef<HTMLDivElement | null>(null);
   const voulumeRef = useRef<HTMLDivElement | null>(null);
@@ -324,7 +324,7 @@ const Controls: React.FC<ControlsProps> = ({
         render={(attrs) => (
           <div
             {...attrs}
-            className="min-h-[20px] min-w-[150px] cursor-pointer items-center justify-center rounded-full bg-[#2f2f2f] py-2 px-4"
+            className="hidden min-h-[20px] min-w-[150px] cursor-pointer items-center justify-center rounded-full bg-[#2f2f2f] py-2 px-4 lg:block"
           >
             <div ref={voulumeRef} className="relative w-full py-2">
               <div className="relative h-[4px] w-full overflow-hidden rounded-full bg-gray-400">

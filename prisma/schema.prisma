@@ -2,7 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -50,6 +51,8 @@ model User {
   likes         Likes[]
   followers     Follow[]  @relation("followings")
   followings    Follow[]  @relation("followers")
+
+  @@fulltext([name])
 }
 
 model VerificationToken {
@@ -72,6 +75,8 @@ model Video {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
   likes     Likes[]
+
+  @@fulltext([title])
 }
 
 model Likes {
