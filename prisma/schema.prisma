@@ -7,13 +7,13 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "mongodb"
   url      = env("DATABASE_URL")
 }
 
 // Necessary for Next auth
 model Account {
-  id                String  @id @default(cuid())
+  id                String  @id @default(cuid()) @map("_id")
   userId            String
   type              String
   provider          String
@@ -31,7 +31,7 @@ model Account {
 }
 
 model Session {
-  id           String   @id @default(cuid())
+  id           String   @id @default(cuid()) @map("_id")
   sessionToken String   @unique
   userId       String
   expires      DateTime
@@ -39,7 +39,7 @@ model Session {
 }
 
 model User {
-  id            String         @id @default(cuid())
+  id            String         @id @default(cuid()) @map("_id")
   name          String?
   email         String?        @unique
   emailVerified DateTime?
@@ -58,6 +58,7 @@ model User {
 }
 
 model VerificationToken {
+  id         String   @id @default(cuid()) @map("_id")
   identifier String
   token      String   @unique
   expires    DateTime
@@ -66,10 +67,10 @@ model VerificationToken {
 }
 
 model Video {
-  id        String    @id @default(cuid())
-  title     String    @db.Text
+  id        String    @id @default(cuid()) @map("_id")
+  title     String
   videoUrl  String
-  user      User?     @relation(fields: [userId], references: [id])
+  user      User?     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String?
   width     Int
   height    Int
@@ -83,16 +84,16 @@ model Video {
 }
 
 model Likes {
-  id String @id @default(cuid())
+  id String @id @default(cuid()) @map("_id")
 
-  video   Video?  @relation(fields: [videoId], references: [id])
+  video   Video?  @relation(fields: [videoId], references: [id], onDelete: Cascade)
   videoId String?
-  user    User?   @relation(fields: [userId], references: [id])
+  user    User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId  String?
 }
 
 model Follow {
-  id          String @id @default(cuid())
+  id          String @id @default(cuid()) @map("_id")
   followerId  String
   followingId String
   follower    User   @relation("followers", fields: [followerId], references: [id])
@@ -100,7 +101,7 @@ model Follow {
 }
 
 model Comment {
-  id        String         @id @default(cuid())
+  id        String         @id @default(cuid()) @map("_id")
   comment   String
   video     Video          @relation(fields: [videoId], references: [id])
   user      User           @relation(fields: [userId], references: [id])
@@ -112,7 +113,7 @@ model Comment {
 }
 
 model ReplyComment {
-  id        String   @id @default(cuid())
+  id        String   @id @default(cuid()) @map("_id")
   comment   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
