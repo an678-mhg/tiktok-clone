@@ -39,9 +39,9 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String         @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String?        @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
@@ -49,8 +49,10 @@ model User {
   bio           String?
   video         Video[]
   likes         Likes[]
-  followers     Follow[]  @relation("followings")
-  followings    Follow[]  @relation("followers")
+  followers     Follow[]       @relation("followings")
+  followings    Follow[]       @relation("followers")
+  comment       Comment[]
+  ReplyComment  ReplyComment[]
 
   @@fulltext([name])
 }
@@ -64,17 +66,18 @@ model VerificationToken {
 }
 
 model Video {
-  id        String   @id @default(cuid())
-  title     String   @db.Text
+  id        String    @id @default(cuid())
+  title     String    @db.Text
   videoUrl  String
-  user      User?    @relation(fields: [userId], references: [id])
+  user      User?     @relation(fields: [userId], references: [id])
   userId    String?
   width     Int
   height    Int
   thumnail  String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt()
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt()
   likes     Likes[]
+  comment   Comment[]
 
   @@fulltext([title])
 }
@@ -94,4 +97,27 @@ model Follow {
   followingId String
   follower    User   @relation("followers", fields: [followerId], references: [id])
   following   User   @relation("followings", fields: [followingId], references: [id])
+}
+
+model Comment {
+  id        String         @id @default(cuid())
+  comment   String
+  video     Video          @relation(fields: [videoId], references: [id])
+  user      User           @relation(fields: [userId], references: [id])
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt()
+  videoId   String
+  userId    String
+  reply     ReplyComment[]
+}
+
+model ReplyComment {
+  id        String   @id @default(cuid())
+  comment   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+  replyTo   Comment? @relation(fields: [replyToId], references: [id])
+  replyToId String?
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
 }

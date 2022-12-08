@@ -1,16 +1,20 @@
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
 import React, { useState } from "react";
+import AccountItem from "../components/Account/AccountItem";
 import VideoSmall from "../components/Video/VideoSmall";
 import MainLayout from "../layout/MainLayout";
-import { VideoDefault } from "../types";
+import { Account, VideoDefault } from "../types";
 
 interface SearchProps {
   videos: VideoDefault[];
+  accounts: Account[];
   keyword: string;
 }
 
-const Search: NextPage<SearchProps> = ({ videos, keyword }) => {
+const Search: NextPage<SearchProps> = ({ videos, keyword, accounts }) => {
   const [searchType, setSearchType] = useState<"videos" | "accounts">("videos");
+
+  console.log(accounts);
 
   return (
     <MainLayout>
@@ -52,7 +56,18 @@ const Search: NextPage<SearchProps> = ({ videos, keyword }) => {
             </div>
           </>
         ) : (
-          <div>Type account</div>
+          <>
+            {accounts?.length === 0 && (
+              <h3 className="mt-5 w-full text-center">
+                No accounts found by keyword {`"${keyword}"`}
+              </h3>
+            )}
+            <div className="mt-5 grid grid-cols-3 gap-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+              {accounts?.map((account) => (
+                <AccountItem account={account} key={account?.id} />
+              ))}
+            </div>
+          </>
         )}
       </div>
     </MainLayout>
@@ -65,17 +80,35 @@ export const getServerSideProps: GetServerSideProps = async (
   const keyword = context?.query?.keyword as string;
 
   try {
-    const videos = await prisma?.video?.findMany({
-      where: {
-        title: {
-          search: keyword,
+    const [videos, accounts] = await Promise.all([
+      prisma?.video?.findMany({
+        where: {
+          title: {
+            search: keyword,
+          },
         },
-      },
-    });
+      }),
+      prisma?.user?.findMany({
+        where: {
+          name: {
+            search: keyword,
+          },
+        },
+        include: {
+          _count: {
+            select: {
+              followers: true,
+              followings: true,
+            },
+          },
+        },
+      }),
+    ]);
 
     return {
       props: {
         videos: JSON.parse(JSON.stringify(videos)),
+        accounts: JSON.parse(JSON.stringify(accounts)),
         keyword,
       },
     };

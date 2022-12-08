@@ -17,6 +17,17 @@ export interface User {
   bio?: any;
 }
 
+export interface Comment {
+  comment: string;
+  createdAt: Date;
+  id: string;
+  updatedAt: Date;
+  user: User;
+  _count: {
+    reply: number;
+  };
+}
+
 export interface Video<T> {
   id: string;
   title: string;
@@ -33,6 +44,7 @@ export interface Video<T> {
   };
   isLike: boolean;
   isFollow: boolean;
+  comment: Comment[];
 }
 
 export interface Account extends User {
@@ -73,4 +85,13 @@ export interface Profile {
   video: VideoDefault[];
   likes: Like[];
   _count: Count;
+}
+
+export interface Reply {
+  comment: string;
+  createdAt: Date;
+  id: string;
+  replyToId: string;
+  updatedAt: Date;
+  user: User;
 }

@@ -1,13 +1,13 @@
 import Tippy from "@tippyjs/react/headless";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useRef } from "react";
 import toast from "react-hot-toast";
 import { AiFillMessage } from "react-icons/ai";
 import { BsFillHeartFill } from "react-icons/bs";
 import { FcMusic } from "react-icons/fc";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { Account, Video } from "../../types";
+import { Account, Comment, User, Video } from "../../types";
 import {
   copyToClipboard,
   providers,
@@ -16,7 +16,7 @@ import {
 import { trpc } from "../../utils/trpc";
 import AccountPreview from "../Sidebar/AccountPreview";
 import CommentItem from "./CommentItem";
-import SelectEmoji from "../SelectEmoji";
+import InputComment from "./InputComment";
 
 interface VideoInfoProps {
   video: Video<Account>;
@@ -34,9 +34,13 @@ const VideoInfo: React.FC<VideoInfoProps> = ({ video, host }) => {
     []
   );
 
+  const bottomRef = useRef<HTMLDivElement | null>(null);
+
   const [isLike, setIsLike] = useState(video?.isLike);
   const [isFollow, setIsFollow] = useState(video?.isFollow);
   const [likeCount, setLikeCount] = useState(video?._count?.likes);
+  const [comment, setComment] = useState<Comment[]>(video?.comment || []);
+  const [userReply, setUserReply] = useState<Comment | null>(null);
 
   const { mutateAsync } = trpc.like.likeVideo.useMutation({
     onError: () => {
@@ -80,6 +84,28 @@ const VideoInfo: React.FC<VideoInfoProps> = ({ video, host }) => {
 
     toggleFollowMutate({ followingId: video?.userId });
     setIsFollow((prev) => !prev);
+  };
+
+  const addNewComment = (comment: Comment) => {
+    setComment((prev) => [...prev, comment]);
+    bottomRef?.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const addNewReply = (commentId: string) => {
+    setComment((prev) =>
+      prev.map((item) => {
+        if (item.id === commentId) {
+          return {
+            ...item,
+            _count: {
+              ...item._count,
+              reply: item._count.reply + 1,
+            },
+          };
+        }
+        return item;
+      })
+    );
   };
 
   return (
@@ -194,22 +220,30 @@ const VideoInfo: React.FC<VideoInfoProps> = ({ video, host }) => {
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 flex w-full items-center border-t border-[#2f2f2f] bg-[#111] px-5 py-3">
-        <SelectEmoji />
-        <button className="px-4 py-2 text-sm">Post</button>
-      </div>
+      <InputComment
+        addNewReply={addNewReply}
+        cancleReply={() => setUserReply(null)}
+        userReply={userReply}
+        addNewComment={addNewComment}
+        videoId={video?.id}
+      />
 
       <div className="h-[calc(100vh-290px)] overflow-y-scroll border-t border-[#2f2f2f] pb-[61px]">
-        <CommentItem />
-        <CommentItem />
-        <CommentItem />
-        <CommentItem />
-        <CommentItem />
-        <CommentItem />
-        <CommentItem />
-        <CommentItem />
-        <CommentItem />
-        <CommentItem />
+        {comment?.length === 0 && (
+          <p className="flex h-full w-full items-center justify-center text-sm font-semibold">
+            No comments yet
+          </p>
+        )}
+        {comment?.map((item) => (
+          <CommentItem
+            replyComment={(comment) => {
+              setUserReply(comment);
+            }}
+            key={item.id}
+            comment={item}
+          />
+        ))}
+        <div ref={bottomRef}></div>
       </div>
     </div>
   );

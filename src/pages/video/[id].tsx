@@ -12,6 +12,7 @@ interface VideoDetailProps {
 }
 
 const VideoDetail: NextPage<VideoDetailProps> = ({ video, host }) => {
+  console.log(video);
   return (
     <div className="flex h-screen flex-col text-white lg:flex-row">
       <VideoPlayerDetail videoUrl={video?.videoUrl} />
@@ -48,6 +49,16 @@ export const getServerSideProps: GetServerSideProps = async (
         _count: {
           select: {
             likes: true,
+          },
+        },
+        comment: {
+          include: {
+            user: true,
+            _count: {
+              select: {
+                reply: true,
+              },
+            },
           },
         },
       },
