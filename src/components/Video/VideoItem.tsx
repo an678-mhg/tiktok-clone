@@ -43,7 +43,7 @@ const VideoItem: React.FC<VideoItemProps> = ({ video, refetch }) => {
   };
 
   return (
-    <div className="flex items-start justify-between border-b border-[#2f2f2f] py-5 sm:pr-0 md:pr-2 lg:pr-0">
+    <div className="flex w-auto items-start justify-between border-b border-[#2f2f2f] py-5 sm:pr-0 md:w-full md:pr-2 lg:pr-0">
       <div className="flex">
         <Link
           href={`/account/${video?.user?.id}`}
@@ -91,7 +91,7 @@ const VideoItem: React.FC<VideoItemProps> = ({ video, refetch }) => {
                     : "border-primary text-primary"
                 } bg-[#2f2f2f] py-1 ${
                   video?.user?.id === data?.user?.id &&
-                  "cursor-not-allowed opacity-0"
+                  "cursor-not-allowed opacity-40"
                 } mt-3 block px-4 text-[15px] font-semibold md:hidden lg:mt-0 lg:ml-4`}
               >
                 {isFollow ? "Following" : "Follow"}
@@ -126,7 +126,7 @@ const VideoItem: React.FC<VideoItemProps> = ({ video, refetch }) => {
             ? "border-transparent text-white"
             : "border-primary text-primary"
         } bg-[#2f2f2f] py-1 ${
-          video?.user?.id === data?.user?.id && "cursor-not-allowed opacity-0"
+          video?.user?.id === data?.user?.id && "cursor-not-allowed opacity-40"
         } hidden px-4 text-[15px] font-semibold md:block`}
       >
         {isFollow ? "Following" : "Follow"}

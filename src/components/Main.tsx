@@ -4,7 +4,6 @@ import { trpc } from "../utils/trpc";
 import VideoItem from "../components/Video/VideoItem";
 import { Spin } from "react-cssfx-loading";
 import { InView } from "react-intersection-observer";
-import { useRouter } from "next/router";
 
 interface MainProps {
   type: "getFollowingVideos" | "getVideos";
@@ -26,8 +25,6 @@ const Main: React.FC<MainProps> = ({ type }) => {
       refetchOnWindowFocus: false,
     }
   );
-
-  const router = useRouter();
 
   const observer = useRef<IntersectionObserver | null>(null);
 
@@ -72,7 +69,7 @@ const Main: React.FC<MainProps> = ({ type }) => {
     videoElements.forEach((item) => {
       observer.current?.observe(item);
     });
-  }, [data?.pages?.length, isLoading, router.asPath]);
+  }, [data?.pages?.length, isLoading, data?.pages[0]?.videos[0]?.id]);
 
   if (isError)
     return (
@@ -93,7 +90,7 @@ const Main: React.FC<MainProps> = ({ type }) => {
     );
 
   return (
-    <div className="flex flex-col items-center justify-center pb-5 lg:px-5">
+    <div className="flex flex-col items-center pb-5 md:items-start md:px-5">
       {data?.pages?.map((page) =>
         page?.videos?.map((video) => (
           <VideoItem

@@ -73,8 +73,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         href={`/video/${id}`}
         className={`mt-3 ${
           height > width * 1.3
-            ? "aspect-[9/16] md:w-[289px]"
-            : "aspect-[9/16] md:w-[289px] lg:aspect-[16/9] lg:w-full lg:flex-1"
+            ? "aspect-[9/16] w-[289px]"
+            : "aspect-[9/16] w-[289px] md:aspect-[16/9] md:w-full md:flex-1"
         } relative max-w-full overflow-hidden rounded-md bg-[#222]`}
       >
         <video
@@ -95,7 +95,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         <Controls isSoundOn={isSound} setSound={setSound} videoRef={videoRef} />
       </Link>
 
-      <div className="absolute right-0 bottom-[70px] ml-5 pr-2 md:static md:pr-0">
+      <div className="ml-5 pr-2">
         <div className="mb-4 flex flex-col items-center">
           <div
             onClick={handleLike}
@@ -108,19 +108,13 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
           </div>
           <p className="mt-2 text-[12px] font-normal text-[#fffffb]">{likes}</p>
         </div>
-        <div className="mb-4 flex flex-col items-center">
+        <div className="flex flex-col items-center">
           <div className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-[#2f2f2f]">
             <AiFillMessage fontSize={21} color="#fff" />
           </div>
           <p className="mt-2 text-[12px] font-normal text-[#fffffb]">
             {commentCount}
           </p>
-        </div>
-        <div className="flex flex-col items-center">
-          <div className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-[#2f2f2f]">
-            <IoMdShareAlt fontSize={21} color="#fff" />
-          </div>
-          <p className="mt-2 text-[12px] font-normal text-[#fffffb]">500</p>
         </div>
       </div>
     </div>

@@ -119,7 +119,7 @@ const Upload = () => {
         description="Upload page from tiktok"
         image="https://res.cloudinary.com/dhz1uowbg/image/upload/v1670595740/uioexfuepgqqovjzfskk.png"
       />
-      <div className="mt-5 h-[calc(100vh-100px)] w-full rounded-md bg-[#333] p-6">
+      <div className="w-full rounded-md bg-[#333] p-6 md:mt-5 md:h-[calc(100vh-100px)]">
         <div>
           <h1 className="text-[24px] font-bold">Upload video</h1>
           <p className="text-[16px] font-normal">
@@ -127,10 +127,10 @@ const Upload = () => {
           </p>
         </div>
 
-        <div className="mt-6 flex items-center">
+        <div className="mt-6 flex flex-col items-center md:flex-row">
           <label
             htmlFor="videoFileInput"
-            className={`flex aspect-[9/16] w-[260px] cursor-pointer flex-col items-center justify-center rounded-md border border-dashed ${
+            className={`aspect-[16/9] w-full cursor-pointer flex-col items-center justify-center rounded-md border border-dashed md:flex md:aspect-[9/16] md:w-[260px] ${
               !videoPreview && "p-[35px]"
             } overflow-hidden text-center hover:border-primary`}
           >
@@ -142,37 +142,39 @@ const Upload = () => {
                   type="file"
                   id="videoFileInput"
                 />
-                <div className="flex w-full justify-center">
-                  <AiOutlineCloudUpload fontSize={40} />
-                </div>
+                <div className="hidden md:block">
+                  <div className="flex w-full justify-center">
+                    <AiOutlineCloudUpload fontSize={40} />
+                  </div>
 
-                <div className="mt-6">
-                  <h3 className="text-[16px] font-semibold">
-                    Select video to upload
-                  </h3>
-                  <p className="mt-3 text-[13px] font-normal text-[rgba(255,255,255,0.75)]">
-                    Or drag and drop a file
-                  </p>
-                </div>
+                  <div className="mt-6">
+                    <h3 className="text-[16px] font-semibold">
+                      Select video to upload
+                    </h3>
+                    <p className="mt-3 text-[13px] font-normal text-[rgba(255,255,255,0.75)]">
+                      Or drag and drop a file
+                    </p>
+                  </div>
 
-                <div className="mt-6">
-                  <p className="my-2 text-[13px] font-normal text-[rgba(255,255,255,0.75)]">
-                    MP4 or WebM
-                  </p>
-                  <p className="my-2 text-[13px] font-normal text-[rgba(255,255,255,0.75)]">
-                    720x1280 resolution or higher
-                  </p>
-                  <p className="my-2 text-[13px] font-normal text-[rgba(255,255,255,0.75)]">
-                    Up to 30 minutes
-                  </p>
-                  <p className="my-2 text-[13px] font-normal text-[rgba(255,255,255,0.75)]">
-                    Less than 30 MB
-                  </p>
+                  <div className="mt-6">
+                    <p className="my-2 text-[13px] font-normal text-[rgba(255,255,255,0.75)]">
+                      MP4 or WebM
+                    </p>
+                    <p className="my-2 text-[13px] font-normal text-[rgba(255,255,255,0.75)]">
+                      720x1280 resolution or higher
+                    </p>
+                    <p className="my-2 text-[13px] font-normal text-[rgba(255,255,255,0.75)]">
+                      Up to 30 minutes
+                    </p>
+                    <p className="my-2 text-[13px] font-normal text-[rgba(255,255,255,0.75)]">
+                      Less than 30 MB
+                    </p>
+                  </div>
                 </div>
 
                 <label
                   htmlFor="videoFileInput"
-                  className="mt-6 block w-full cursor-pointer rounded-[2px] bg-primary px-4 py-2 text-center text-sm font-semibold text-white"
+                  className="block w-full cursor-pointer rounded-[2px] bg-primary px-4 py-2 text-center text-sm font-semibold text-white md:mt-6"
                 >
                   Select file
                 </label>
@@ -190,7 +192,10 @@ const Upload = () => {
               </div>
             )}
           </label>
-          <form onSubmit={handleUploadVideo} className="ml-6 flex-1">
+          <form
+            onSubmit={handleUploadVideo}
+            className="mt-5 w-full flex-1 md:ml-6 md:mt-0"
+          >
             <div className="mb-6 w-full">
               <label className="block text-[16px] font-semibold">Title</label>
               <input

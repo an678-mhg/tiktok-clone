@@ -9,7 +9,7 @@ const Sidebar = () => {
 
   return (
     <div
-      className={`fixed top-[48px] bottom-0 z-[9998] overflow-y-scroll border-r border-[#2f2f2f] bg-[#121212] pt-5 md:top-[56px] md:left-auto md:w-[348px] md:pl-2 lg:mr-[6px] lg:border-none`}
+      className={`fixed top-[48px] bottom-0 z-[9998] overflow-y-scroll border-r border-[#2f2f2f] bg-[#121212] pt-5 md:left-auto lg:top-[56px] lg:mr-[6px] lg:w-[348px] lg:border-none lg:pl-2`}
     >
       <Menu />
       {!data?.user && <LoginButton />}

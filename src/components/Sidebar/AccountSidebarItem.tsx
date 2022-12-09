@@ -24,14 +24,14 @@ const AccountSidebarItem: React.FC<AccountSidebarItemProps> = ({ account }) => {
         href={`/account/${account?.id}`}
         className="flex cursor-pointer items-center p-2"
       >
-        <div className="h-8 w-8 md:mr-3">
+        <div className="h-8 w-8 lg:mr-3">
           <LazyLoadImage
             className="rounded-full"
             effect="opacity"
             src={account?.image}
           />
         </div>
-        <div className="hidden flex-1 md:block">
+        <div className="hidden flex-1 lg:block">
           <h3 className="mt-[-2px] flex items-center text-[16px] font-bold">
             @
             {removeAccents(
