@@ -84,14 +84,14 @@ export const getServerSideProps: GetServerSideProps = async (
       prisma?.video?.findMany({
         where: {
           title: {
-            search: keyword,
+            contains: keyword,
           },
         },
       }),
       prisma?.user?.findMany({
         where: {
           name: {
-            search: keyword,
+            contains: keyword,
           },
         },
         include: {
