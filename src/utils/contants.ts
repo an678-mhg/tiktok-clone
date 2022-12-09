@@ -98,3 +98,5 @@ export const copyToClipboard = (text: string) => {
     console.error(error);
   }
 };
+
+export const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;

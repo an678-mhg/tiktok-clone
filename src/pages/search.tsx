@@ -5,6 +5,7 @@ import VideoSmall from "../components/Video/VideoSmall";
 import MainLayout from "../layout/MainLayout";
 import { Account, VideoDefault } from "../types";
 import { prisma } from "../server/db/client";
+import Meta from "../components/Meta";
 
 interface SearchProps {
   videos: VideoDefault[];
@@ -15,10 +16,13 @@ interface SearchProps {
 const Search: NextPage<SearchProps> = ({ videos, keyword, accounts }) => {
   const [searchType, setSearchType] = useState<"videos" | "accounts">("videos");
 
-  console.log(accounts);
-
   return (
     <MainLayout>
+      <Meta
+        title={`Search results to "${keyword}" | Tiktok`}
+        description="Search page from tiktok"
+        image="https://res.cloudinary.com/dhz1uowbg/image/upload/v1670595740/uioexfuepgqqovjzfskk.png"
+      />
       <div className="w-full px-4 pb-5">
         <ul className="mt-1 flex w-full items-center justify-center border-b border-[#2f2f2f]">
           <li

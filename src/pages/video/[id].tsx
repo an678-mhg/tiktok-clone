@@ -6,6 +6,7 @@ import { unstable_getServerSession as getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]";
 import { Account, Video } from "../../types";
 import { prisma } from "../../server/db/client";
+import Meta from "../../components/Meta";
 
 interface VideoDetailProps {
   video: Video<Account>;
@@ -15,6 +16,11 @@ interface VideoDetailProps {
 const VideoDetail: NextPage<VideoDetailProps> = ({ video, host }) => {
   return (
     <div className="flex h-screen flex-col text-white lg:flex-row">
+      <Meta
+        title={`${video?.title} | ${video?.user?.name} on Tiktok`}
+        description={video?.title}
+        image={video?.videoUrl?.split(".mp4")[0] + ".jpg"}
+      />
       <VideoPlayerDetail videoUrl={video?.videoUrl} />
       <VideoInfo host={host} video={video} />
     </div>

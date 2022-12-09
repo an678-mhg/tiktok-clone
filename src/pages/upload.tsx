@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { unstable_getServerSession as getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]";
+import Meta from "../components/Meta";
 
 const Upload = () => {
   const videoPreviewRef = useRef<HTMLVideoElement | null>(null);
@@ -113,6 +114,11 @@ const Upload = () => {
 
   return (
     <MainLayout>
+      <Meta
+        title="Upload new video | Tiktok"
+        description="Upload page from tiktok"
+        image="https://res.cloudinary.com/dhz1uowbg/image/upload/v1670595740/uioexfuepgqqovjzfskk.png"
+      />
       <div className="mt-5 h-[calc(100vh-100px)] w-full rounded-md bg-[#333] p-6">
         <div>
           <h1 className="text-[24px] font-bold">Upload video</h1>

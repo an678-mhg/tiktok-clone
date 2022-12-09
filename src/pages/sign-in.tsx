@@ -8,6 +8,7 @@ import { signIn } from "next-auth/react";
 import { unstable_getServerSession as getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]";
 import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import Meta from "../components/Meta";
 
 const signInMethods = [
   {
@@ -31,6 +32,11 @@ const SignIn = () => {
 
   return (
     <div className="h-screen text-white">
+      <Meta
+        title="SignIn | Tiktok"
+        description="SignIn page from tiktok"
+        image="https://res.cloudinary.com/dhz1uowbg/image/upload/v1670595740/uioexfuepgqqovjzfskk.png"
+      />
       <div className="flex items-center justify-between p-4">
         <Link href="/">
           <Logo />

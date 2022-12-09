@@ -7,6 +7,7 @@ import { Profile } from "../../types";
 import { unstable_getServerSession as getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]";
 import { prisma } from "../../server/db/client";
+import Meta from "../../components/Meta";
 
 interface ProfileProps {
   profile: Profile;
@@ -16,6 +17,11 @@ interface ProfileProps {
 const Profile: NextPage<ProfileProps> = ({ profile, isFollow }) => {
   return (
     <MainLayout>
+      <Meta
+        title={`${profile?.name} on Tiktok`}
+        description={`${profile?.name} on Tiktok`}
+        image={profile?.image}
+      />
       <div className="mt-5 w-full">
         <Info isFollow={isFollow} profile={profile} />
         <div className="mt-5 w-full">
