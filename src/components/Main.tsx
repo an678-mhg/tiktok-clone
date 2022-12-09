@@ -93,7 +93,7 @@ const Main: React.FC<MainProps> = ({ type }) => {
     );
 
   return (
-    <div className="pb-5 lg:px-5">
+    <div className="flex flex-col items-center justify-center pb-5 lg:px-5">
       {data?.pages?.map((page) =>
         page?.videos?.map((video) => (
           <VideoItem
