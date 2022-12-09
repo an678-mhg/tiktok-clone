@@ -41,6 +41,7 @@ export interface Video<T> {
   user: T;
   _count: {
     likes: number;
+    comment: number;
   };
   isLike: boolean;
   isFollow: boolean;

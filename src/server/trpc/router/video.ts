@@ -31,7 +31,10 @@ export const videoRouter = router({
     .query(async ({ ctx, input }) => {
       const skip = input?.cursor || 0;
       const videos = await ctx.prisma.video.findMany({
-        include: { user: true, _count: { select: { likes: true } } },
+        include: {
+          user: true,
+          _count: { select: { likes: true, comment: true } },
+        },
         orderBy: { updatedAt: "desc" },
         take: input?.limit || 5,
         skip,
@@ -95,7 +98,10 @@ export const videoRouter = router({
         where: {
           userId: { in: followings?.map((item) => item.followingId) },
         },
-        include: { user: true, _count: { select: { likes: true } } },
+        include: {
+          user: true,
+          _count: { select: { likes: true, comment: true } },
+        },
         orderBy: { updatedAt: "desc" },
         take: input?.limit || 5,
         skip,

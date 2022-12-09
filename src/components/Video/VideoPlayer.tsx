@@ -17,6 +17,7 @@ interface VideoPlayerProps {
   videoId: string;
   like: boolean;
   likeCount: number;
+  commentCount: number;
   id: string;
 }
 
@@ -28,6 +29,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   like,
   likeCount,
   id,
+  commentCount,
 }) => {
   const [loading, setLoading] = useState(false);
   const [isLike, setIslike] = useState(like);
@@ -110,7 +112,9 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
           <div className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-[#2f2f2f]">
             <AiFillMessage fontSize={21} color="#fff" />
           </div>
-          <p className="mt-2 text-[12px] font-normal text-[#fffffb]">10</p>
+          <p className="mt-2 text-[12px] font-normal text-[#fffffb]">
+            {commentCount}
+          </p>
         </div>
         <div className="flex flex-col items-center">
           <div className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-[#2f2f2f]">

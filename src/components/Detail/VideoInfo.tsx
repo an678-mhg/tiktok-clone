@@ -39,6 +39,7 @@ const VideoInfo: React.FC<VideoInfoProps> = ({ video, host }) => {
   const [isLike, setIsLike] = useState(video?.isLike);
   const [isFollow, setIsFollow] = useState(video?.isFollow);
   const [likeCount, setLikeCount] = useState(video?._count?.likes);
+  const [commentCount, setCommentCount] = useState(video?._count?.comment);
   const [comment, setComment] = useState<Comment[]>(video?.comment || []);
   const [userReply, setUserReply] = useState<Comment | null>(null);
 
@@ -88,6 +89,7 @@ const VideoInfo: React.FC<VideoInfoProps> = ({ video, host }) => {
 
   const addNewComment = (comment: Comment) => {
     setComment((prev) => [...prev, comment]);
+    setCommentCount((prev) => prev + 1);
     bottomRef?.current?.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -180,7 +182,7 @@ const VideoInfo: React.FC<VideoInfoProps> = ({ video, host }) => {
                 <AiFillMessage fontSize={15} color="#fff" />
               </div>
               <p className="ml-2 text-[12px] font-normal text-[#fffffb]">
-                {video?._count?.likes}
+                {commentCount}
               </p>
             </div>
           </div>

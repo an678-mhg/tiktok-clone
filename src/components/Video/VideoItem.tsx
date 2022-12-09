@@ -114,6 +114,7 @@ const VideoItem: React.FC<VideoItemProps> = ({ video, refetch }) => {
             videoUrl={video?.videoUrl}
             height={video?.height}
             width={video?.width}
+            commentCount={video?._count?.comment}
           />
         </div>
       </div>
