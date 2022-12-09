@@ -49,6 +49,7 @@ export const getServerSideProps: GetServerSideProps = async (
         _count: {
           select: {
             likes: true,
+            comment: true,
           },
         },
         comment: {
