@@ -51,7 +51,9 @@ export const videoRouter = router({
           ctx.prisma.follow.findMany({
             where: {
               followerId: ctx.session.user.id,
-              followingId: { in: videos.map((item) => item.user?.id!) },
+              followingId: {
+                in: videos.map((item) => item.user?.id as string),
+              },
             },
           }),
         ]);
@@ -73,7 +75,7 @@ export const videoRouter = router({
         nextSkip:
           videos?.length < ((input?.limit as number) || 5)
             ? null
-            : skip + input?.limit!,
+            : skip + (input?.limit as number),
       };
     }),
   getFollowingVideos: protectedProcedure
@@ -85,7 +87,7 @@ export const videoRouter = router({
 
       const followings = await prisma?.follow?.findMany({
         where: {
-          followerId: ctx?.session?.user?.id!,
+          followerId: ctx?.session?.user?.id as string,
         },
       });
 
@@ -113,7 +115,9 @@ export const videoRouter = router({
           ctx.prisma.follow.findMany({
             where: {
               followerId: ctx.session.user.id,
-              followingId: { in: videos.map((item) => item.user?.id!) },
+              followingId: {
+                in: videos.map((item) => item.user?.id as string),
+              },
             },
           }),
         ]);

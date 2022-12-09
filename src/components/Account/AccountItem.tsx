@@ -1,7 +1,7 @@
 import Link from "next/link";
 import React from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { Account } from "../../types";
+import type { Account } from "../../types";
 import { removeAccents } from "../../utils/contants";
 
 interface AccountItemProps {

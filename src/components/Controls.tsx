@@ -5,12 +5,11 @@ import { formatVideoTime } from "../utils/contants";
 import { GiPauseButton } from "react-icons/gi";
 import { FaPlay } from "react-icons/fa";
 import Tippy from "@tippyjs/react/headless";
-import useStore from "../stored/app";
 
 interface ControlsProps {
   videoRef: React.MutableRefObject<HTMLVideoElement | null>;
   showSeekTime?: boolean;
-  setSound: Function;
+  setSound: () => void;
   isSoundOn: boolean;
 }
 
@@ -29,13 +28,13 @@ const Controls: React.FC<ControlsProps> = ({
 
   const handleSeekTime = (e: MouseEvent) => {
     const clientX = e.clientX;
-    const left = progressRef.current?.getBoundingClientRect().left;
-    const width = progressRef.current?.getBoundingClientRect().width;
-    const percent = (clientX - left!) / width!;
+    const left = progressRef.current?.getBoundingClientRect().left as number;
+    const width = progressRef.current?.getBoundingClientRect().width as number;
+    const percent = (clientX - left) / width;
 
     document.body.style.userSelect = "none";
 
-    if (clientX <= left!) {
+    if (clientX <= left) {
       if (videoRef !== null && videoRef?.current !== null) {
         videoRef.current.currentTime = 0;
       }
@@ -43,7 +42,7 @@ const Controls: React.FC<ControlsProps> = ({
       return;
     }
 
-    if (clientX >= width! + left!) {
+    if (clientX >= width + left) {
       if (videoRef !== null && videoRef?.current !== null) {
         videoRef.current.currentTime = videoRef?.current?.duration;
         setCurrentTime(videoRef?.current?.duration);
@@ -52,21 +51,23 @@ const Controls: React.FC<ControlsProps> = ({
     }
 
     if (videoRef !== null && videoRef?.current !== null) {
-      videoRef.current.currentTime = percent * videoRef.current?.duration!;
+      videoRef.current.currentTime = percent * videoRef.current?.duration;
     }
 
-    setCurrentTime(percent * videoRef?.current?.duration!);
+    if (videoRef !== null && videoRef?.current !== null) {
+      setCurrentTime(percent * videoRef?.current?.duration);
+    }
   };
 
   const handleSeekTimeMobile = (e: TouchEvent) => {
-    const clientX = e.touches[0]?.clientX!;
-    const left = progressRef.current?.getBoundingClientRect().left;
-    const width = progressRef.current?.getBoundingClientRect().width;
-    const percent = (clientX - left!) / width!;
+    const clientX = e.touches[0]?.clientX as number;
+    const left = progressRef.current?.getBoundingClientRect().left as number;
+    const width = progressRef.current?.getBoundingClientRect().width as number;
+    const percent = (clientX - left) / width;
 
     document.body.style.userSelect = "none";
 
-    if (clientX <= left!) {
+    if (clientX <= left) {
       if (videoRef !== null && videoRef?.current !== null) {
         videoRef.current.currentTime = 0;
       }
@@ -74,7 +75,7 @@ const Controls: React.FC<ControlsProps> = ({
       return;
     }
 
-    if (clientX >= width! + left!) {
+    if (clientX >= width + left) {
       if (videoRef !== null && videoRef?.current !== null) {
         videoRef.current.currentTime = videoRef?.current?.duration;
         setCurrentTime(videoRef?.current?.duration);
@@ -83,17 +84,19 @@ const Controls: React.FC<ControlsProps> = ({
     }
 
     if (videoRef !== null && videoRef?.current !== null) {
-      videoRef.current.currentTime = percent * videoRef.current?.duration!;
+      videoRef.current.currentTime = percent * videoRef.current?.duration;
     }
 
-    setCurrentTime(percent * videoRef?.current?.duration!);
+    if (videoRef !== null && videoRef?.current !== null) {
+      setCurrentTime(percent * videoRef?.current?.duration);
+    }
   };
 
   const handleChangeVolume = (e: MouseEvent) => {
     e.preventDefault();
     const clientX = e.clientX;
-    const left = voulumeRef?.current?.getBoundingClientRect().left!;
-    const width = voulumeRef?.current?.getBoundingClientRect().width!;
+    const left = voulumeRef?.current?.getBoundingClientRect().left as number;
+    const width = voulumeRef?.current?.getBoundingClientRect().width as number;
     document.body.style.userSelect = "none";
 
     if (clientX <= left) {
@@ -154,7 +157,7 @@ const Controls: React.FC<ControlsProps> = ({
   // handle time update
   useEffect(() => {
     const handleTimeUpdate = () => {
-      setCurrentTime(videoRef?.current?.currentTime!);
+      setCurrentTime(videoRef?.current?.currentTime as number);
     };
 
     videoRef?.current?.addEventListener("timeupdate", handleTimeUpdate);
@@ -300,7 +303,8 @@ const Controls: React.FC<ControlsProps> = ({
               <div
                 style={{
                   width: `${
-                    (currentTime * 100) / videoRef?.current?.duration!
+                    (currentTime * 100) /
+                    (videoRef?.current?.duration as number)
                   }%`,
                 }}
                 className={`absolute top-0 bottom-0 bg-primary`}
@@ -308,13 +312,15 @@ const Controls: React.FC<ControlsProps> = ({
             </div>
             <div
               style={{
-                left: `${(currentTime * 100) / videoRef?.current?.duration!}%`,
+                left: `${
+                  (currentTime * 100) / (videoRef?.current?.duration as number)
+                }%`,
               }}
               className="absolute top-[50%] h-[15px] w-[15px] translate-y-[-50%] rounded-full bg-primary"
             />
           </div>
           <p className="text-sm font-semibold">
-            {formatVideoTime(videoRef?.current?.duration!)}
+            {formatVideoTime(videoRef?.current?.duration as number)}
           </p>
         </div>
       </div>

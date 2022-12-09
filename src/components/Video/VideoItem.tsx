@@ -11,7 +11,7 @@ import Link from "next/link";
 
 interface VideoItemProps {
   video: Video<User>;
-  refetch: Function;
+  refetch: any;
 }
 
 const VideoItem: React.FC<VideoItemProps> = ({ video, refetch }) => {

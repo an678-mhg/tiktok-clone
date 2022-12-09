@@ -51,7 +51,9 @@ const VideoPlayerDetail: React.FC<VideoPlayerDetailProps> = ({ videoUrl }) => {
         </Link>
       </div>
       <Controls
-        setSound={() => setIsSoundOn((prev) => !prev)}
+        setSound={() => {
+          setIsSoundOn((prev) => !prev);
+        }}
         isSoundOn={isSoundOn}
         showSeekTime
         videoRef={videoRef!}

@@ -84,7 +84,7 @@ const Upload = () => {
       const videoUrl = await axios.post(url, formData, {
         onUploadProgress: (p) => {
           const { loaded, total } = p;
-          let percent = Math.floor((loaded * 100) / total!);
+          const percent = Math.floor((loaded * 100) / (total as number));
           toast.loading(`Upload ${percent}%....`, { id: toastId });
         },
       });

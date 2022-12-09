@@ -12,9 +12,9 @@ export const commentRouter = router({
     .mutation(async ({ ctx, input }) => {
       const comment = await prisma?.comment.create({
         data: {
-          comment: input?.comment!,
-          userId: ctx?.session?.user?.id!,
-          videoId: input?.videoId!,
+          comment: input?.comment as string,
+          userId: ctx?.session?.user?.id as string,
+          videoId: input?.videoId as string,
         },
         include: {
           user: true,

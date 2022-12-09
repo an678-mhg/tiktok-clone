@@ -38,7 +38,7 @@ const InputComment: React.FC<InputCommentProps> = ({
   const { mutateAsync: replyMutateAsync, isLoading: isLoadingReply } =
     trpc.comment.replyComment?.useMutation({
       onSuccess: (response) => {
-        addNewReply(response?.reply?.replyToId!);
+        addNewReply(response?.reply?.replyToId as string);
         setComment("");
         cancleReply();
       },

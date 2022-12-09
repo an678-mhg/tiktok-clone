@@ -64,7 +64,7 @@ const Account = () => {
               <LazyLoadImage
                 className="rounded-full"
                 effect="opacity"
-                src={data?.user?.image!}
+                src={data?.user?.image as string}
               />
             </div>
           </div>

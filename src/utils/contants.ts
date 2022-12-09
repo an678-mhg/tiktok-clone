@@ -1,5 +1,5 @@
 export const removeAccents = (str: string) => {
-  let AccentsMap = [
+  const AccentsMap = [
     "aàảãáạăằẳẵắặâầẩẫấậ",
     "AÀẢÃÁẠĂẰẲẴẮẶÂẦẨẪẤẬ",
     "dđ",
@@ -17,8 +17,8 @@ export const removeAccents = (str: string) => {
   ];
 
   for (let i = 0; i < AccentsMap.length; i++) {
-    let re = new RegExp("[" + AccentsMap[i]!.substr(1) + "]", "g");
-    let char = AccentsMap[i]![0];
+    const re = new RegExp("[" + AccentsMap[i]!.substr(1) + "]", "g");
+    const char = AccentsMap[i]![0];
     str = str.replace(re, char!);
   }
 
@@ -81,7 +81,7 @@ export const copyToClipboard = (text: string) => {
     if (navigator.clipboard && window.isSecureContext) {
       return navigator.clipboard.writeText(text);
     } else {
-      let textArea = document.createElement("textarea");
+      const textArea = document.createElement("textarea");
       textArea.value = text;
       textArea.style.position = "fixed";
       textArea.style.left = "-999999px";

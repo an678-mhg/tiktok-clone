@@ -23,9 +23,9 @@ const ShowReplyies: React.FC<ShowReplyiesProps> = ({
     <div className="ml-[55px] mt-3 cursor-pointer px-4">
       {isLoading && <CircularProgress width={20} height={20} />}
       {data?.replies?.map((reply) => (
-        <ReplyItem reply={reply as Reply} />
+        <ReplyItem key={reply?.id} reply={reply as Reply} />
       ))}
-      {!isLoading && data?.replies?.length! > 0 && (
+      {!isLoading && (data?.replies?.length as number) > 0 && (
         <p
           onClick={closeReplies}
           className="ml-[54px] mt-3 flex cursor-pointer items-center text-[13px] text-gray-300"
