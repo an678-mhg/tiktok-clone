@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { User, Video } from "../types";
 import { trpc } from "../utils/trpc";
 import VideoItem from "../components/Video/VideoItem";
-import { Spin } from "react-cssfx-loading";
+import { CircularProgress, Spin } from "react-cssfx-loading";
 import { InView } from "react-intersection-observer";
 
 interface MainProps {
@@ -109,7 +109,14 @@ const Main: React.FC<MainProps> = ({ type }) => {
           }
         }}
       >
-        {({ ref }) => <div ref={ref} className="flex h-10 w-full" />}
+        {({ ref }) => (
+          <div
+            ref={ref}
+            className="mt-4 flex w-full items-center justify-center"
+          >
+            {isFetchingNextPage && <CircularProgress />}
+          </div>
+        )}
       </InView>
     </div>
   );
