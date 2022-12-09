@@ -4,6 +4,7 @@ import AccountItem from "../components/Account/AccountItem";
 import VideoSmall from "../components/Video/VideoSmall";
 import MainLayout from "../layout/MainLayout";
 import { Account, VideoDefault } from "../types";
+import { prisma } from "../server/db/client";
 
 interface SearchProps {
   videos: VideoDefault[];

@@ -6,6 +6,7 @@ import MainLayout from "../../layout/MainLayout";
 import { Profile } from "../../types";
 import { unstable_getServerSession as getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]";
+import { prisma } from "../../server/db/client";
 
 interface ProfileProps {
   profile: Profile;

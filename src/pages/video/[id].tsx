@@ -5,6 +5,7 @@ import VideoPlayerDetail from "../../components/Detail/VideoPlayerDetail";
 import { unstable_getServerSession as getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]";
 import { Account, Video } from "../../types";
+import { prisma } from "../../server/db/client";
 
 interface VideoDetailProps {
   video: Video<Account>;
