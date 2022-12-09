@@ -10,7 +10,7 @@ export const commentRouter = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      const comment = await prisma?.comment.create({
+      const comment = await ctx.prisma?.comment.create({
         data: {
           comment: input?.comment as string,
           userId: ctx?.session?.user?.id as string,
@@ -52,8 +52,8 @@ export const commentRouter = router({
     }),
   getReplyComment: publicProcedure
     .input(z.object({ replyToId: z.string().nullable() }))
-    .query(async ({ input }) => {
-      const replies = await prisma?.replyComment?.findMany({
+    .query(async ({ input, ctx }) => {
+      const replies = await ctx.prisma?.replyComment?.findMany({
         where: {
           replyToId: input.replyToId,
         },
