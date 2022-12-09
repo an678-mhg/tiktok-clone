@@ -88,7 +88,7 @@ export const videoRouter = router({
     .query(async ({ ctx, input }) => {
       const skip = input?.cursor || 0;
 
-      const followings = await prisma?.follow?.findMany({
+      const followings = await ctx.prisma?.follow?.findMany({
         where: {
           followerId: ctx?.session?.user?.id as string,
         },
