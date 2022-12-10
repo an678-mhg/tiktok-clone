@@ -14,7 +14,7 @@ Live demo: [https://tiktok-clone-psi-nine.vercel.app/](https://tiktok-clone-psi-
 - Upload video
 - Search video, account by name
 - Following account
-- Following video
+- Following video page
 
 ### Preview
 
