@@ -24,12 +24,6 @@ const signInMethods = [
 ];
 
 const SignIn = () => {
-  const handleSignIn = (provider: string) => {
-    signIn(provider).catch((error) => {
-      console.log(error);
-    });
-  };
-
   return (
     <div className="h-screen text-white">
       <Meta
@@ -60,7 +54,7 @@ const SignIn = () => {
             {signInMethods.map((item) => (
               <button
                 key={item.provider}
-                onClick={() => handleSignIn(item.provider)}
+                onClick={() => signIn(item.provider)}
                 className="relative mb-4 flex w-full items-center justify-center border border-gray-600 px-4 py-2.5 last:mb-0"
               >
                 <div className="absolute left-4 top-[50%] translate-y-[-50%]">
