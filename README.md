@@ -1,4 +1,4 @@
-# PhimMoi
+# Tiktok Clone
 
 A fullstack Tiktok clone with NextJS, Typescript, Prisma, TaiwindCSS, MongoDB, trpc
 
