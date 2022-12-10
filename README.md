@@ -9,7 +9,7 @@ Live demo: [https://tiktok-clone-psi-nine.vercel.app/](https://tiktok-clone-psi-
 - SignIn with Google, Facebook
 - Autoplay video on scroll
 - Like, comment share video
-- Infinite Scroll video
+- Infinite scroll video
 - Customize video player interface
 - Upload video
 - Search video, account by name
