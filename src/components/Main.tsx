@@ -42,7 +42,7 @@ const Main: React.FC<MainProps> = ({ type }) => {
     const position = localStorage.getItem("position");
 
     if (position) {
-      window.scrollTo({ top: position });
+      window.scrollTo({ top: Number(position) });
     }
   }, []);
 
