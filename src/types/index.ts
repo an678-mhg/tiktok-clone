@@ -45,7 +45,7 @@ export interface Video<T> {
   };
   isLike: boolean;
   isFollow: boolean;
-  comment: Comment[];
+  comment?: Comment[];
 }
 
 export interface Account extends User {

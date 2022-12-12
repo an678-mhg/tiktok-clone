@@ -26,6 +26,26 @@ const Main: React.FC<MainProps> = ({ type }) => {
     }
   );
 
+  useEffect(() => {
+    const savePosition = () => {
+      localStorage.setItem("position", (window.scrollY as number)?.toString());
+    };
+
+    document.addEventListener("scroll", savePosition);
+
+    return () => {
+      document.removeEventListener("scroll", savePosition);
+    };
+  }, []);
+
+  useEffect(() => {
+    const position = localStorage.getItem("position");
+
+    if (position) {
+      window.scrollTo({ top: position });
+    }
+  }, []);
+
   const observer = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
@@ -90,7 +110,10 @@ const Main: React.FC<MainProps> = ({ type }) => {
     );
 
   return (
-    <div className="flex flex-col items-center pb-5 md:items-start md:px-5">
+    <div
+      id="main"
+      className="flex flex-col items-center pb-5 md:items-start md:px-5"
+    >
       {data?.pages?.map((page) =>
         page?.videos?.map((video) => (
           <VideoItem

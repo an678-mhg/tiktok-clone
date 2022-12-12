@@ -21,7 +21,7 @@ const AccountPreview: React.FC<AccountPreviewProps> = ({ account }) => {
         </div>
       </div>
       <div className="mt-4">
-        <h3 className="mt-[-2px] flex items-center text-[16px] font-bold">
+        <h3 className="line-clamp-1 mt-[-2px] flex items-center text-[16px] font-bold">
           @
           {removeAccents(
             account?.name?.toLocaleLowerCase().split(" ").join("")
@@ -30,7 +30,7 @@ const AccountPreview: React.FC<AccountPreviewProps> = ({ account }) => {
             <Check />
           </span>
         </h3>
-        <p className="text-[12px] text-[rgba(255,255,255,0.75)]">
+        <p className="line-clamp-1 text-[12px] text-[rgba(255,255,255,0.75)]">
           {account.name}
         </p>
       </div>

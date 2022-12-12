@@ -52,7 +52,7 @@ model User {
   followers     Follow[]       @relation("followings")
   followings    Follow[]       @relation("followers")
   comment       Comment[]
-  ReplyComment  ReplyComment[]
+  replyComment  ReplyComment[]
 
   @@fulltext([name])
 }

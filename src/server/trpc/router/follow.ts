@@ -53,6 +53,7 @@ export const followRouter = router({
     };
   }),
   getAccountSuggestion: publicProcedure.query(async ({ ctx }) => {
+    const totalUser = await ctx.prisma.user.count();
     const accounts = await ctx.prisma.user.findMany({
       include: {
         _count: {
@@ -65,6 +66,7 @@ export const followRouter = router({
       where: {
         id: { not: ctx.session?.user?.id },
       },
+      skip: Math.floor(Math.random() * (totalUser - 5)),
       take: 5,
     });
 

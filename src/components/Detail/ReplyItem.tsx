@@ -1,6 +1,7 @@
 import React from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Reply } from "../../types";
+import { calculateCreatedTime } from "../../utils/contants";
 
 interface ReplyItemProps {
   reply: Reply;
@@ -20,7 +21,9 @@ const ReplyItem: React.FC<ReplyItemProps> = ({ reply }) => {
         <h3 className="text-[15px] font-semibold">{reply?.user?.name}</h3>
         <p className="text-sm font-normal">{reply?.comment}</p>
         <div className="mt-[6px] flex items-center">
-          <p className="text-[13px] font-normal text-gray-300">02-12</p>
+          <p className="text-[13px] font-normal text-gray-300">
+            {calculateCreatedTime(reply?.updatedAt)}
+          </p>
         </div>
       </div>
     </div>

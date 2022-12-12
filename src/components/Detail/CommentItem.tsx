@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { BsChevronDown } from "react-icons/bs";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Comment } from "../../types";
+import { calculateCreatedTime } from "../../utils/contants";
 import ShowReplyies from "./ShowReplyies";
 
 interface CommentItemProps {
@@ -28,7 +29,9 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment, replyComment }) => {
           <h3 className="text-[15px] font-semibold">{comment?.user?.name}</h3>
           <p className="text-sm font-normal">{comment?.comment}</p>
           <div className="mt-[6px] flex items-center">
-            <p className="text-[13px] font-normal text-gray-300">02-12</p>
+            <p className="text-[13px] font-normal text-gray-300">
+              {calculateCreatedTime(comment?.updatedAt)}
+            </p>
             {data?.user && (
               <p
                 onClick={() => replyComment(comment)}

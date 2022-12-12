@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { CircularProgress } from "react-cssfx-loading";
 import { BiArrowBack } from "react-icons/bi";
 import LogoRadius from "../../icons/LogoRadius";
@@ -15,8 +15,13 @@ const VideoPlayerDetail: React.FC<VideoPlayerDetailProps> = ({ videoUrl }) => {
 
   const [loading, setLoading] = useState(false);
   const [isSoundOn, setIsSoundOn] = useState(true);
+  const [isBackButtonVisible, setIsBackButtonVisible] = useState(false);
 
   const router = useRouter();
+
+  useEffect(() => {
+    if (history.length > 2) setIsBackButtonVisible(true);
+  }, []);
 
   return (
     <div className="relative z-[9999] h-full w-full lg:flex-1">
@@ -39,12 +44,14 @@ const VideoPlayerDetail: React.FC<VideoPlayerDetailProps> = ({ videoUrl }) => {
         onClick={(e) => e.stopPropagation()}
         className="absolute top-0 left-0 z-[9999] flex items-center p-2 lg:p-5"
       >
-        <div
-          onClick={() => router.back()}
-          className="mr-5 flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-full bg-[#2f2f2f]"
-        >
-          <BiArrowBack fontSize={20} />
-        </div>
+        {isBackButtonVisible && (
+          <div
+            onClick={() => router.back()}
+            className="mr-5 flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-full bg-[#2f2f2f]"
+          >
+            <BiArrowBack fontSize={20} />
+          </div>
+        )}
 
         <Link href="/">
           <LogoRadius />
