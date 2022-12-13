@@ -44,9 +44,10 @@ const VideoItem: React.FC<VideoItemProps> = ({ video, refetch }) => {
 
   return (
     <div
-      className={`flex ${`video-${video?.id}`} w-auto items-start justify-between border-b border-[#2f2f2f] py-5 sm:pr-0 md:w-full md:pr-2 lg:pr-0`}
+      id={`video-${video?.id}`}
+      className={`flex w-full items-start justify-between border-b border-[#2f2f2f] py-5 sm:pr-0 md:pr-2 lg:pr-0`}
     >
-      <div className="flex">
+      <div className="flex w-full">
         <Link
           href={`/account/${video?.user?.id}`}
           className="hidden h-[56px] w-[56px] lg:block"

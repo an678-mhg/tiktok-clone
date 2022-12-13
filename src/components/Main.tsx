@@ -4,6 +4,8 @@ import { trpc } from "../utils/trpc";
 import VideoItem from "../components/Video/VideoItem";
 import { CircularProgress, Spin } from "react-cssfx-loading";
 import { InView } from "react-intersection-observer";
+import useScrollRestoration from "../hooks/useScrollRestoration";
+import { useRouter } from "next/router";
 
 interface MainProps {
   type: "getFollowingVideos" | "getVideos";
@@ -26,27 +28,17 @@ const Main: React.FC<MainProps> = ({ type }) => {
     }
   );
 
-  useEffect(() => {
-    const savePosition = () => {
-      localStorage.setItem("position", (window.scrollY as number)?.toString());
-    };
+  const router = useRouter();
 
-    document.addEventListener("scroll", savePosition);
-
-    return () => {
-      document.removeEventListener("scroll", savePosition);
-    };
-  }, []);
-
-  useEffect(() => {
-    const position = localStorage.getItem("position");
-
-    if (position) {
-      window.scrollTo({ top: Number(position) });
-    }
-  }, []);
+  useScrollRestoration(router);
 
   const observer = useRef<IntersectionObserver | null>(null);
+
+  useEffect(() => {
+    if (history.scrollRestoration) {
+      console.log(history.scrollRestoration);
+    }
+  }, []);
 
   useEffect(() => {
     if (observer.current) observer.current.disconnect();

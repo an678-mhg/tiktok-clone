@@ -1,6 +1,4 @@
-import Link from "next/link";
 import React, { useMemo, useState } from "react";
-import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Profile } from "../../types";
 import VideoSmall from "../Video/VideoSmall";
 
