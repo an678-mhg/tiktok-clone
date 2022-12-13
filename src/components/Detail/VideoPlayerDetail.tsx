@@ -20,7 +20,7 @@ const VideoPlayerDetail: React.FC<VideoPlayerDetailProps> = ({ videoUrl }) => {
   const router = useRouter();
 
   useEffect(() => {
-    if (history.length > 2) setIsBackButtonVisible(true);
+    if (history.length >= 2) setIsBackButtonVisible(true);
   }, []);
 
   return (
