@@ -17,7 +17,11 @@ const VideoDetail: NextPage<VideoDetailProps> = ({ video, host }) => {
   return (
     <div className="flex h-screen flex-col text-white lg:flex-row">
       <Meta
-        title={`${video?.title} | ${video?.user?.name} on Tiktok`}
+        title={
+          video?.title
+            ? `${video?.title} | ${video?.user?.name} on Tiktok`
+            : `${video?.user?.name} on Tiktok`
+        }
         description={video?.title}
         image={video?.videoUrl?.split(".mp4")[0] + ".jpg"}
       />
