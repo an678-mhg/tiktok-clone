@@ -2,7 +2,7 @@
 
 A fullstack Tiktok clone with NextJS, Typescript, Prisma, TaiwindCSS, MongoDB, trpc
 
-Live demo: [https://tiktok-clone-psi-nine.vercel.app/](https://tiktok-clone-psi-nine.vercel.app/)
+Live demo: [https://toptop-app.vercel.app/](https://toptop-app.vercel.app/)
 
 ### Features
 
