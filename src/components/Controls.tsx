@@ -316,7 +316,7 @@ const Controls: React.FC<ControlsProps> = ({
                   (currentTime * 100) / (videoRef?.current?.duration as number)
                 }%`,
               }}
-              className="absolute top-[50%] h-[15px] w-[15px] translate-y-[-50%] rounded-full bg-primary"
+              className="absolute top-[50%] h-[10px] w-[10px] translate-y-[-50%] rounded-full bg-primary"
             />
           </div>
           <p className="text-sm font-semibold">
@@ -341,7 +341,7 @@ const Controls: React.FC<ControlsProps> = ({
               </div>
               <div
                 style={{ left: volume * 100 + "%" }}
-                className="absolute top-[50%] h-[15px] w-[15px] translate-y-[-50%] rounded-full bg-primary"
+                className="absolute top-[50%] h-[10px] w-[10px] translate-y-[-50%] rounded-full bg-primary"
               />
             </div>
           </div>

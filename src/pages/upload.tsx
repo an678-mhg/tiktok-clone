@@ -74,7 +74,9 @@ const Upload = () => {
     }
 
     const toastId = toast.loading("Upload....", { position: "bottom-left" });
+
     setLoading(true);
+
     try {
       const url = `https://api.cloudinary.com/v1_1/dhz1uowbg/video/upload`;
 
