@@ -1,8 +1,14 @@
-import { type NextPage } from "next";
+import { type NextPage, GetServerSidePropsContext } from "next";
 import Main from "../components/Main";
 import Meta from "../components/Meta";
 import Sidebar from "../components/Sidebar";
 import MainLayout from "../layout/MainLayout";
+import { createProxySSGHelpers } from "@trpc/react-query/ssg";
+import { unstable_getServerSession as getServerSession } from "next-auth";
+import { authOptions } from "./api/auth/[...nextauth]";
+import { appRouter } from "../server/trpc/router/_app";
+import { prisma } from "../server/db/client";
+import superjson from "superjson";
 
 const Home: NextPage = () => {
   return (
@@ -18,6 +24,25 @@ const Home: NextPage = () => {
       </div>
     </MainLayout>
   );
+};
+
+export const getServerSideProps = async ({
+  req,
+  res,
+}: GetServerSidePropsContext) => {
+  const session = await getServerSession(req, res, authOptions);
+
+  const ssg = createProxySSGHelpers({
+    router: appRouter,
+    ctx: { session, prisma },
+    transformer: superjson,
+  });
+
+  return {
+    props: {
+      trpcState: ssg.dehydrate(),
+    },
+  };
 };
 
 export default Home;
