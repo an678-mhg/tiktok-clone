@@ -73,8 +73,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         href={`/video/${id}`}
         className={`mt-3 ${
           height > width * 1.3
-            ? "aspect-[9/16] w-[289px]"
-            : "aspect-[9/16] w-[289px] md:aspect-[16/9] md:w-full md:flex-1"
+            ? "aspect-[9/16] w-[230px] md:w-[289px]"
+            : "aspect-[9/16] w-[230px] md:aspect-[16/9] md:w-full md:flex-1"
         } relative max-w-full overflow-hidden rounded-md bg-[#222]`}
       >
         <video
