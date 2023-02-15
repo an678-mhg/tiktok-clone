@@ -73,16 +73,19 @@ const Upload = () => {
       return;
     }
 
-    const toastId = toast.loading("Upload....", { position: "bottom-left" });
+    const toastId = toast.loading("Upload....", { position: "top-left" });
 
     setLoading(true);
 
     try {
-      const url = `https://api.cloudinary.com/v1_1/dhz1uowbg/video/upload`;
+      const url = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_URL as string;
 
       const formData = new FormData();
       formData.append("file", videoFile);
-      formData.append("upload_preset", "rxdryhqe");
+      formData.append(
+        "upload_preset",
+        process.env.NEXT_PUBLIC_UPLOAD_KEY as string
+      );
 
       const videoUrl = await axios.post(url, formData, {
         onUploadProgress: (p) => {

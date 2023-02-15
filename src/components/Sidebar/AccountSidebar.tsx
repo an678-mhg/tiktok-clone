@@ -9,11 +9,11 @@ interface AccountSidebarProps {
 }
 
 const AccountSidebar: React.FC<AccountSidebarProps> = ({ title, type }) => {
-  const { data } = trpc.follow[type].useQuery(undefined, {
+  const { data, isLoading } = trpc.follow[type].useQuery(undefined, {
     refetchOnWindowFocus: false,
   });
 
-  if (data?.accounts?.length === 0) {
+  if (isLoading || data?.accounts.length === 0) {
     return <></>;
   }
 

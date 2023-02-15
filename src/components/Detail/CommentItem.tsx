@@ -35,7 +35,7 @@ const CommentItem: React.FC<CommentItemProps> = ({ comment, replyComment }) => {
             {data?.user && (
               <p
                 onClick={() => replyComment(comment)}
-                className="ml-[24px] cursor-pointer text-[13px] font-normal text-gray-300"
+                className="ml-2 cursor-pointer text-[13px] font-normal text-gray-300"
               >
                 Reply
               </p>

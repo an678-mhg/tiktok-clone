@@ -4,7 +4,6 @@ import SoundOn from "../icons/SoundOn";
 import { formatVideoTime } from "../utils/contants";
 import { GiPauseButton } from "react-icons/gi";
 import { FaPlay } from "react-icons/fa";
-import Tippy from "@tippyjs/react/headless";
 
 interface ControlsProps {
   videoRef: React.MutableRefObject<HTMLVideoElement | null>;
@@ -21,13 +20,12 @@ const Controls: React.FC<ControlsProps> = ({
 }) => {
   const [currentTime, setCurrentTime] = useState(0);
   const [isPlay, setIsPlay] = useState(false);
-  const [volume, setVolume] = useState(1);
 
   const progressRef = useRef<HTMLDivElement | null>(null);
   const voulumeRef = useRef<HTMLDivElement | null>(null);
 
-  const handleSeekTime = (e: MouseEvent) => {
-    const clientX = e.clientX;
+  const handleSeekTime = (e: any) => {
+    const clientX = e?.clientX || (e?.touches[0]?.clientX as number);
     const left = progressRef.current?.getBoundingClientRect().left as number;
     const width = progressRef.current?.getBoundingClientRect().width as number;
     const percent = (clientX - left) / width;
@@ -57,69 +55,6 @@ const Controls: React.FC<ControlsProps> = ({
     if (videoRef !== null && videoRef?.current !== null) {
       setCurrentTime(percent * videoRef?.current?.duration);
     }
-  };
-
-  const handleSeekTimeMobile = (e: TouchEvent) => {
-    const clientX = e.touches[0]?.clientX as number;
-    const left = progressRef.current?.getBoundingClientRect().left as number;
-    const width = progressRef.current?.getBoundingClientRect().width as number;
-    const percent = (clientX - left) / width;
-
-    document.body.style.userSelect = "none";
-
-    if (clientX <= left) {
-      if (videoRef !== null && videoRef?.current !== null) {
-        videoRef.current.currentTime = 0;
-      }
-      setCurrentTime(0);
-      return;
-    }
-
-    if (clientX >= width + left) {
-      if (videoRef !== null && videoRef?.current !== null) {
-        videoRef.current.currentTime = videoRef?.current?.duration;
-        setCurrentTime(videoRef?.current?.duration);
-      }
-      return;
-    }
-
-    if (videoRef !== null && videoRef?.current !== null) {
-      videoRef.current.currentTime = percent * videoRef.current?.duration;
-    }
-
-    if (videoRef !== null && videoRef?.current !== null) {
-      setCurrentTime(percent * videoRef?.current?.duration);
-    }
-  };
-
-  const handleChangeVolume = (e: MouseEvent) => {
-    e.preventDefault();
-    const clientX = e.clientX;
-    const left = voulumeRef?.current?.getBoundingClientRect().left as number;
-    const width = voulumeRef?.current?.getBoundingClientRect().width as number;
-    document.body.style.userSelect = "none";
-
-    if (clientX <= left) {
-      if (videoRef !== null && videoRef?.current !== null) {
-        videoRef.current.volume = 0;
-      }
-      setVolume(0);
-      return;
-    }
-    if (clientX >= width + left) {
-      if (videoRef !== null && videoRef?.current !== null) {
-        videoRef.current.volume = 1;
-      }
-      setVolume(1);
-      return;
-    }
-
-    const percent = (clientX - left) / width;
-
-    if (videoRef !== null && videoRef?.current !== null) {
-      videoRef.current.volume = percent;
-    }
-    setVolume(percent);
   };
 
   const handlePlayPause = () => {
@@ -219,56 +154,32 @@ const Controls: React.FC<ControlsProps> = ({
   // handle seek time in mobile with touch event
   useEffect(() => {
     progressRef?.current?.addEventListener("touchstart", () => {
-      document.addEventListener("touchmove", handleSeekTimeMobile);
+      document.addEventListener("touchmove", handleSeekTime);
     });
 
     return () => {
       progressRef?.current?.removeEventListener("touchstart", () => {
-        document.addEventListener("touchmove", handleSeekTimeMobile);
+        document.addEventListener("touchmove", handleSeekTime);
       });
     };
   }, []);
 
   useEffect(() => {
     progressRef?.current?.addEventListener("touchend", () => {
-      document.removeEventListener("touchmove", handleSeekTimeMobile);
+      document.removeEventListener("touchmove", handleSeekTime);
     });
 
     return () => {
       progressRef?.current?.removeEventListener("touchend", () => {
-        document.removeEventListener("touchmove", handleSeekTimeMobile);
+        document.removeEventListener("touchmove", handleSeekTime);
       });
     };
   }, []);
 
   useEffect(() => {
-    voulumeRef?.current?.addEventListener("click", handleChangeVolume);
+    voulumeRef?.current?.addEventListener("click", handleSeekTime);
     return () => {
-      voulumeRef?.current?.removeEventListener("click", handleChangeVolume);
-    };
-  }, [voulumeRef?.current]);
-
-  useEffect(() => {
-    voulumeRef.current?.addEventListener("mousedown", () => {
-      document.addEventListener("mousemove", handleChangeVolume);
-    });
-
-    return () => {
-      voulumeRef.current?.removeEventListener("mousedown", () => {
-        document.addEventListener("mousemove", handleChangeVolume);
-      });
-    };
-  }, [voulumeRef?.current]);
-
-  useEffect(() => {
-    document?.addEventListener("mouseup", () => {
-      document.removeEventListener("mousemove", handleChangeVolume);
-    });
-
-    return () => {
-      document?.removeEventListener("mouseup", () => {
-        document.removeEventListener("mousemove", handleChangeVolume);
-      });
+      voulumeRef?.current?.removeEventListener("click", handleSeekTime);
     };
   }, [voulumeRef?.current]);
 
@@ -324,36 +235,12 @@ const Controls: React.FC<ControlsProps> = ({
           </p>
         </div>
       </div>
-      <Tippy
-        offset={[-50, 10]}
-        interactive
-        render={(attrs) => (
-          <div
-            {...attrs}
-            className="hidden min-h-[20px] min-w-[150px] cursor-pointer items-center justify-center rounded-full bg-[#2f2f2f] py-2 px-4 lg:block"
-          >
-            <div ref={voulumeRef} className="relative w-full py-2">
-              <div className="relative h-[4px] w-full overflow-hidden rounded-full bg-gray-400">
-                <div
-                  style={{ width: volume * 100 + "%" }}
-                  className="absolute inset-0 bg-primary"
-                />
-              </div>
-              <div
-                style={{ left: volume * 100 + "%" }}
-                className="absolute top-[50%] h-[10px] w-[10px] translate-y-[-50%] rounded-full bg-primary"
-              />
-            </div>
-          </div>
-        )}
+      <div
+        onClick={() => setSound()}
+        className="ml-2 flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-full bg-[#2f2f2f] lg:ml-5"
       >
-        <div
-          onClick={() => setSound()}
-          className="ml-2 flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-full bg-[#2f2f2f] lg:ml-5"
-        >
-          {isSoundOn ? <SoundOn /> : <SoundOff />}
-        </div>
-      </Tippy>
+        {isSoundOn ? <SoundOn /> : <SoundOff />}
+      </div>
     </div>
   );
 };

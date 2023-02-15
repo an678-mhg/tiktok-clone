@@ -89,7 +89,7 @@ const InputComment: React.FC<InputCommentProps> = ({
             }
             className="w-full overflow-hidden rounded-md bg-[#2f2f2f] px-4 py-2 text-sm"
           />
-          {isLoading ? (
+          {isLoadingReply || isLoading ? (
             <CircularProgress className="ml-4" width={30} height={30} />
           ) : (
             <div className="flex items-center">

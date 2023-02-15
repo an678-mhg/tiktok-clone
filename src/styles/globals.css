@@ -43,8 +43,7 @@ img {
 
 /* width */
 ::-webkit-scrollbar {
-  width: 6px;
-  display: none;
+  width: 10px;
 }
 
 /* Track */
