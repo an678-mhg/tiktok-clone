@@ -23,9 +23,6 @@ export interface Comment {
   id: string;
   updatedAt: Date;
   user: User;
-  _count: {
-    reply: number;
-  };
 }
 
 export interface Video<T> {

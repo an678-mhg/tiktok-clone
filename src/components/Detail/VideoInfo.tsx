@@ -7,7 +7,7 @@ import { AiFillMessage } from "react-icons/ai";
 import { BsFillHeartFill } from "react-icons/bs";
 import { FcMusic } from "react-icons/fc";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import { Account, Comment, User, Video } from "../../types";
+import { Account, Comment, Video } from "../../types";
 import {
   copyToClipboard,
   providers,
@@ -41,7 +41,6 @@ const VideoInfo: React.FC<VideoInfoProps> = ({ video, host }) => {
   const [likeCount, setLikeCount] = useState(video?._count?.likes);
   const [commentCount, setCommentCount] = useState(video?._count?.comment);
   const [comment, setComment] = useState<Comment[]>(video?.comment || []);
-  const [userReply, setUserReply] = useState<Comment | null>(null);
 
   const { mutateAsync } = trpc.like.likeVideo.useMutation({
     onError: () => {
@@ -93,25 +92,8 @@ const VideoInfo: React.FC<VideoInfoProps> = ({ video, host }) => {
     bottomRef?.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  const addNewReply = (commentId: string) => {
-    setComment((prev) =>
-      prev.map((item) => {
-        if (item.id === commentId) {
-          return {
-            ...item,
-            _count: {
-              ...item._count,
-              reply: item._count.reply + 1,
-            },
-          };
-        }
-        return item;
-      })
-    );
-  };
-
   return (
-    <div className="relative w-full border-l border-[#2f2f2f] lg:w-[544px]">
+    <div className="relative w-full border-l border-[#2f2f2f] lg:w-[544px] lg:overflow-y-hidden">
       <div className="px-4 pb-5 pt-4 lg:px-5 lg:pt-[54px]">
         <div className="flex items-center justify-between">
           <Tippy
@@ -206,9 +188,11 @@ const VideoInfo: React.FC<VideoInfoProps> = ({ video, host }) => {
         </div>
 
         <div className="mt-5 flex items-center rounded-sm bg-[#2f2f2f] px-3 py-2">
-          <p className="line-clamp-1 mr-4 flex-1 text-sm font-normal">
-            {copyLink}
-          </p>
+          <input
+            readOnly
+            value={copyLink}
+            className="line-clamp-1 mr-4 flex-1 bg-transparent text-sm font-normal"
+          />
           <button
             onClick={() =>
               copyToClipboard(copyLink)
@@ -222,13 +206,7 @@ const VideoInfo: React.FC<VideoInfoProps> = ({ video, host }) => {
         </div>
       </div>
 
-      <InputComment
-        addNewReply={addNewReply}
-        cancleReply={() => setUserReply(null)}
-        userReply={userReply}
-        addNewComment={addNewComment}
-        videoId={video?.id}
-      />
+      <InputComment addNewComment={addNewComment} videoId={video?.id} />
 
       <div className="h-[calc(100vh-290px)] overflow-y-scroll border-t border-[#2f2f2f] pb-[61px]">
         {comment?.length === 0 && (
@@ -237,13 +215,7 @@ const VideoInfo: React.FC<VideoInfoProps> = ({ video, host }) => {
           </p>
         )}
         {comment?.map((item) => (
-          <CommentItem
-            replyComment={(comment) => {
-              setUserReply(comment);
-            }}
-            key={item.id}
-            comment={item}
-          />
+          <CommentItem key={item.id} comment={item} />
         ))}
         <div ref={bottomRef}></div>
       </div>

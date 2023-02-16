@@ -39,9 +39,9 @@ model Session {
 }
 
 model User {
-  id            String         @id @default(cuid()) @map("_id")
+  id            String    @id @default(cuid()) @map("_id")
   name          String?
-  email         String?        @unique
+  email         String?   @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
@@ -49,10 +49,9 @@ model User {
   bio           String?
   video         Video[]
   likes         Likes[]
-  followers     Follow[]       @relation("followings")
-  followings    Follow[]       @relation("followers")
+  followers     Follow[]  @relation("followings")
+  followings    Follow[]  @relation("followers")
   comment       Comment[]
-  replyComment  ReplyComment[]
 
   @@fulltext([name])
 }
@@ -101,24 +100,12 @@ model Follow {
 }
 
 model Comment {
-  id        String         @id @default(cuid()) @map("_id")
-  comment   String
-  video     Video          @relation(fields: [videoId], references: [id])
-  user      User           @relation(fields: [userId], references: [id])
-  createdAt DateTime       @default(now())
-  updatedAt DateTime       @updatedAt()
-  videoId   String
-  userId    String
-  reply     ReplyComment[]
-}
-
-model ReplyComment {
   id        String   @id @default(cuid()) @map("_id")
   comment   String
+  video     Video    @relation(fields: [videoId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
-  replyTo   Comment? @relation(fields: [replyToId], references: [id])
-  replyToId String?
-  user      User     @relation(fields: [userId], references: [id])
+  videoId   String
   userId    String
 }
