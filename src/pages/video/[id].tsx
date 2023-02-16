@@ -65,11 +65,6 @@ export const getServerSideProps: GetServerSideProps = async (
         comment: {
           include: {
             user: true,
-            _count: {
-              select: {
-                reply: true,
-              },
-            },
           },
         },
       },
