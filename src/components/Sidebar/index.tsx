@@ -14,9 +14,7 @@ const Sidebar = () => {
       <Menu />
       {!data?.user && <LoginButton />}
       <AccountSidebar type="getAccountSuggestion" title="Suggested accounts" />
-      {data?.user && (
-        <AccountSidebar type="getAccountFollowing" title="Following accounts" />
-      )}
+      <AccountSidebar type="getAccountFollowing" title="Following accounts" />
     </div>
   );
 };

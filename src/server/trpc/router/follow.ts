@@ -30,7 +30,7 @@ export const followRouter = router({
   getAccountFollowing: protectedProcedure.query(async ({ ctx }) => {
     const followings = await ctx.prisma.follow.findMany({
       where: {
-        followerId: ctx.session.user.id,
+        followerId: ctx.session?.user?.id,
       },
     });
 

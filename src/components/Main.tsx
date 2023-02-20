@@ -35,12 +35,6 @@ const Main: React.FC<MainProps> = ({ type }) => {
   const observer = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
-    if (history.scrollRestoration) {
-      console.log(history.scrollRestoration);
-    }
-  }, []);
-
-  useEffect(() => {
     if (observer.current) observer.current.disconnect();
 
     const videoElements = [

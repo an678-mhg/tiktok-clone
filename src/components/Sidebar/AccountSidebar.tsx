@@ -1,3 +1,4 @@
+import { useSession } from "next-auth/react";
 import React from "react";
 import { Account } from "../../types";
 import { trpc } from "../../utils/trpc";
@@ -9,9 +10,20 @@ interface AccountSidebarProps {
 }
 
 const AccountSidebar: React.FC<AccountSidebarProps> = ({ title, type }) => {
-  const { data, isLoading } = trpc.follow[type].useQuery(undefined, {
-    refetchOnWindowFocus: false,
-  });
+  const { data: session } = useSession();
+
+  const getAccount = () => {
+    if (session?.user && type === "getAccountFollowing") {
+      return trpc.follow.getAccountFollowing.useQuery(undefined, {
+        refetchOnWindowFocus: false,
+      });
+    }
+    return trpc.follow.getAccountSuggestion.useQuery(undefined, {
+      refetchOnWindowFocus: false,
+    });
+  };
+
+  const { data, isLoading } = getAccount();
 
   if (isLoading || data?.accounts.length === 0) {
     return <></>;
