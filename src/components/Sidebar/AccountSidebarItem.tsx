@@ -1,6 +1,6 @@
 import React from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import Check from "../../icons/Check";
+// import Check from "../../icons/Check";
 import Tippy from "@tippyjs/react/headless";
 import AccountPreview from "./AccountPreview";
 import { Account } from "../../types";
@@ -37,9 +37,9 @@ const AccountSidebarItem: React.FC<AccountSidebarItemProps> = ({ account }) => {
             {removeAccents(
               account?.name?.toLocaleLowerCase().split(" ").join("")
             )}
-            <span className="ml-1 inline-block">
+            {/* <span className="ml-1 inline-block">
               <Check />
-            </span>
+            </span> */}
           </h3>
           <p className="line-clamp-1 text-[12px] text-[rgba(255,255,255,0.75)]">
             {account?.name}

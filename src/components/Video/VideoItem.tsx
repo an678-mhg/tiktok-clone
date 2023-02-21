@@ -88,7 +88,7 @@ const VideoItem: React.FC<VideoItemProps> = ({ video, refetch }) => {
               <button
                 disabled={video?.user?.id === data?.user?.id}
                 onClick={handleToggleFollow}
-                className={`rounded-[2px] border ${
+                className={`rounded-[4px] border ${
                   isFollow
                     ? "border-transparent text-white"
                     : "border-primary text-primary"
@@ -124,7 +124,7 @@ const VideoItem: React.FC<VideoItemProps> = ({ video, refetch }) => {
       <button
         disabled={video?.user?.id === data?.user?.id}
         onClick={handleToggleFollow}
-        className={`rounded-[2px] border ${
+        className={`rounded-[4px] border ${
           isFollow
             ? "border-transparent text-white"
             : "border-primary text-primary"

@@ -8,9 +8,10 @@ import Controls from "../Controls";
 
 interface VideoPlayerDetailProps {
   videoUrl: string;
+  poster: string;
 }
 
-const VideoPlayerDetail: React.FC<VideoPlayerDetailProps> = ({ videoUrl }) => {
+const VideoPlayerDetail: React.FC<VideoPlayerDetailProps> = ({ videoUrl, poster }) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const [loading, setLoading] = useState(false);
@@ -32,6 +33,7 @@ const VideoPlayerDetail: React.FC<VideoPlayerDetailProps> = ({ videoUrl }) => {
         ref={videoRef}
         src={videoUrl}
         className="h-full w-full"
+        poster={poster}
       />
 
       {loading && (

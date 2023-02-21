@@ -52,6 +52,7 @@ model User {
   followers     Follow[]  @relation("followings")
   followings    Follow[]  @relation("followers")
   comment       Comment[]
+  checked       Boolean   @default(false)
 
   @@fulltext([name])
 }

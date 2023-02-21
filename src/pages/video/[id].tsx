@@ -14,6 +14,8 @@ interface VideoDetailProps {
 }
 
 const VideoDetail: NextPage<VideoDetailProps> = ({ video, host }) => {
+  const poster = video?.videoUrl?.split(".mp4")[0] + ".jpg";
+
   return (
     <div className="flex h-screen flex-col text-white lg:flex-row">
       <Meta
@@ -23,9 +25,9 @@ const VideoDetail: NextPage<VideoDetailProps> = ({ video, host }) => {
             : `${video?.user?.name} on Tiktok`
         }
         description={video?.title}
-        image={video?.videoUrl?.split(".mp4")[0] + ".jpg"}
+        image={poster}
       />
-      <VideoPlayerDetail videoUrl={video?.videoUrl} />
+      <VideoPlayerDetail poster={poster} videoUrl={video?.videoUrl} />
       <VideoInfo host={host} video={video} />
     </div>
   );

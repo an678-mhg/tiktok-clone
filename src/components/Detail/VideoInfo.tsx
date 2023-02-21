@@ -103,7 +103,10 @@ const VideoInfo: React.FC<VideoInfoProps> = ({ video, host }) => {
               <AccountPreview account={video?.user} {...attrs} />
             )}
           >
-            <div className="flex cursor-pointer items-center">
+            <Link
+              href={`/account/${video?.userId}`}
+              className="flex cursor-pointer items-center"
+            >
               <div className="h-[40px] w-[40px]">
                 <LazyLoadImage
                   effect="opacity"
@@ -122,7 +125,7 @@ const VideoInfo: React.FC<VideoInfoProps> = ({ video, host }) => {
                   )}
                 </p>
               </div>
-            </div>
+            </Link>
           </Tippy>
           {data?.user?.id !== video?.userId && (
             <button
