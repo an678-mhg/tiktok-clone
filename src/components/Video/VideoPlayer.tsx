@@ -74,7 +74,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         className={`mt-3 ${
           height > width * 1.3
             ? "aspect-[9/16] w-[200px] md:w-[289px]"
-            : "aspect-[9/16] w-[200px] md:aspect-[16/9] md:w-full md:flex-1"
+            : "aspect-[16/9] md:flex-1"
         } relative max-w-full overflow-hidden rounded-md bg-[#222]`}
       >
         <video
