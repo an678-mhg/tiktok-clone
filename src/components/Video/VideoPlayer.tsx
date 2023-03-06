@@ -35,11 +35,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   const [isLike, setIslike] = useState(like);
   const [likes, setLikes] = useState(likeCount);
 
-  useEffect(() => {
-    setIslike(like);
-    setLikes(likeCount);
-  }, [like, likeCount]);
-
   const { isSound, setSound } = useStore();
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
@@ -95,23 +90,27 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         <Controls isSoundOn={isSound} setSound={setSound} videoRef={videoRef} />
       </Link>
 
-      <div className="ml-5 pr-2">
-        <div className="mb-4 flex flex-col items-center">
+      <div className="ml-2 pr-2 md:ml-5">
+        <div className="mb-2 flex flex-col items-center">
           <div
             onClick={handleLike}
-            className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-[#2f2f2f]"
+            className="flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-full bg-[#2f2f2f] md:h-12 md:w-12"
           >
             <BsFillHeartFill
-              fontSize={21}
-              className={`${isLike ? "text-primary" : "text-white"}`}
+              className={`${
+                isLike ? "text-primary" : "text-white"
+              } text-[18px] md:text-[21px]`}
             />
           </div>
           <p className="mt-2 text-[12px] font-normal text-[#fffffb]">{likes}</p>
         </div>
         <Link href={`/video/${videoId}`}>
           <div className="flex flex-col items-center">
-            <div className="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-[#2f2f2f]">
-              <AiFillMessage fontSize={21} color="#fff" />
+            <div className="flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-full bg-[#2f2f2f] md:h-12 md:w-12">
+              <AiFillMessage
+                className="text-[18px] md:text-[21px]"
+                color="#fff"
+              />
             </div>
             <p className="mt-2 text-[12px] font-normal text-[#fffffb]">
               {commentCount}
