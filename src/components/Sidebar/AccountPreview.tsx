@@ -1,6 +1,5 @@
 import React from "react";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import Check from "../../icons/Check";
 import { Account } from "../../types";
 import { removeAccents } from "../../utils/contants";
 
@@ -26,9 +25,6 @@ const AccountPreview: React.FC<AccountPreviewProps> = ({ account }) => {
           {removeAccents(
             account?.name?.toLocaleLowerCase().split(" ").join("")
           )}
-          <span className="ml-1 inline-block">
-            <Check />
-          </span>
         </h3>
         <p className="line-clamp-1 text-[12px] text-[rgba(255,255,255,0.75)]">
           {account.name}

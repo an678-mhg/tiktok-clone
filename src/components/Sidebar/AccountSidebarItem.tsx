@@ -14,7 +14,7 @@ interface AccountSidebarItemProps {
 const AccountSidebarItem: React.FC<AccountSidebarItemProps> = ({ account }) => {
   return (
     <Tippy
-      delay={500}
+      delay={200}
       offset={[0, -5]}
       placement="bottom-start"
       interactive
@@ -37,9 +37,6 @@ const AccountSidebarItem: React.FC<AccountSidebarItemProps> = ({ account }) => {
             {removeAccents(
               account?.name?.toLocaleLowerCase().split(" ").join("")
             )}
-            {/* <span className="ml-1 inline-block">
-              <Check />
-            </span> */}
           </h3>
           <p className="line-clamp-1 text-[12px] text-[rgba(255,255,255,0.75)]">
             {account?.name}

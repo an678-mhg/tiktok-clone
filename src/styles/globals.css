@@ -43,8 +43,7 @@ img {
 
 /* width */
 ::-webkit-scrollbar {
-  width: 10px;
-  display: none;
+  width: 8px;
 }
 
 /* Track */
@@ -56,6 +55,10 @@ img {
 ::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.08);
   border-radius: 4px;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
 }
 
 .line-clamp-3,

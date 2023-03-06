@@ -4,8 +4,6 @@ import { trpc } from "../utils/trpc";
 import VideoItem from "../components/Video/VideoItem";
 import { CircularProgress, Spin } from "react-cssfx-loading";
 import { InView } from "react-intersection-observer";
-import useScrollRestoration from "../hooks/useScrollRestoration";
-import { useRouter } from "next/router";
 
 interface MainProps {
   type: "getFollowingVideos" | "getVideos";
@@ -27,10 +25,6 @@ const Main: React.FC<MainProps> = ({ type }) => {
       refetchOnWindowFocus: false,
     }
   );
-
-  const router = useRouter();
-
-  useScrollRestoration(router);
 
   const observer = useRef<IntersectionObserver | null>(null);
 
