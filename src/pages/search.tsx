@@ -90,6 +90,7 @@ export const getServerSideProps: GetServerSideProps = async (
         where: {
           title: {
             contains: keyword,
+            mode: "insensitive",
           },
         },
       }),
@@ -97,6 +98,7 @@ export const getServerSideProps: GetServerSideProps = async (
         where: {
           name: {
             contains: keyword,
+            mode: "insensitive",
           },
         },
         include: {
@@ -118,6 +120,7 @@ export const getServerSideProps: GetServerSideProps = async (
       },
     };
   } catch (error) {
+    console.log(error);
     return {
       props: {},
       notFound: true,

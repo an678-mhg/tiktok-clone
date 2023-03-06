@@ -1,7 +1,6 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef } from "react";
 import { BsFillHeartFill } from "react-icons/bs";
 import { AiFillMessage } from "react-icons/ai";
-import { IoMdShareAlt } from "react-icons/io";
 import { Spin } from "react-cssfx-loading";
 import useStore from "../../stored/app";
 import { trpc } from "../../utils/trpc";
@@ -69,7 +68,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
         className={`mt-3 ${
           height > width * 1.3
             ? "aspect-[9/16] w-[200px] md:w-[289px]"
-            : "aspect-[16/9] md:flex-1"
+            : "aspect-auto md:flex-1"
         } relative max-w-full overflow-hidden rounded-md bg-[#222]`}
       >
         <video
