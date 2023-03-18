@@ -191,17 +191,29 @@ const Controls: React.FC<ControlsProps> = ({
         e.preventDefault();
       }}
     >
-      <div className="flex flex-1 items-center">
-        <div
-          onClick={handlePlayPause}
-          className="mr-2 flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-full bg-[#2f2f2f] lg:mr-4"
-        >
-          {isPlay ? <GiPauseButton fontSize={15} /> : <FaPlay fontSize={15} />}
+      <div className="flex flex-1 flex-col">
+        <div className="flex w-full items-center justify-between">
+          <div
+            onClick={handlePlayPause}
+            className="mr-2 flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-full bg-[#2f2f2f] lg:mr-4"
+          >
+            {isPlay ? (
+              <GiPauseButton fontSize={15} />
+            ) : (
+              <FaPlay fontSize={15} />
+            )}
+          </div>
+          <div
+            onClick={() => setSound()}
+            className="ml-2 flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-full bg-[#2f2f2f] lg:ml-5"
+          >
+            {isSoundOn ? <SoundOn /> : <SoundOff />}
+          </div>
         </div>
 
         <div
           style={{ display: showSeekTime ? "flex" : "none" }}
-          className="flex flex-1 items-center"
+          className="mt-4 flex flex-1 items-center"
         >
           <p className="text-sm font-semibold">
             {formatVideoTime(currentTime)}
@@ -234,12 +246,6 @@ const Controls: React.FC<ControlsProps> = ({
             {formatVideoTime(videoRef?.current?.duration as number)}
           </p>
         </div>
-      </div>
-      <div
-        onClick={() => setSound()}
-        className="ml-2 flex h-[40px] w-[40px] cursor-pointer items-center justify-center rounded-full bg-[#2f2f2f] lg:ml-5"
-      >
-        {isSoundOn ? <SoundOn /> : <SoundOff />}
       </div>
     </div>
   );
