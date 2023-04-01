@@ -51,7 +51,6 @@ export const getServerSideProps: GetServerSideProps = async ({
       session?.user?.id
         ? ssg.follow.getAccountFollowing.fetch()
         : Promise.resolve([]),
-      ssg.video.getVideos.fetchInfinite({ limit: 5 }),
     ]);
 
     return {
