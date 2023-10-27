@@ -10,11 +10,11 @@
 
 ### Live demo: 
 
-- [Click here](https://toptop-app.vercel.app/)
+- [https://toptop-app.vercel.app/](https://toptop-app.vercel.app/)
 
 ### Features
 
-- SignIn with Google, Facebook
+- Sign in with Google, Facebook
 - Autoplay video on scroll
 - Like, comment share video
 - Infinite scroll video
