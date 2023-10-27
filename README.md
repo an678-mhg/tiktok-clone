@@ -36,4 +36,3 @@
 ### Preview
 
 ![Preview 1](https://res.cloudinary.com/annnn/image/upload/v1670686322/home_page_tiktok_clone_n1zfs4.png)
-![Preview 2](https://res.cloudinary.com/annnn/image/upload/v1670686325/video_page_tiktok_clone_fzplvl.png)
