@@ -10,7 +10,7 @@
 
 ### Live demo: 
 
-- [https://toptop-app.vercel.app/](https://toptop-app.vercel.app/)
+[https://toptop-app.vercel.app/](https://toptop-app.vercel.app/)
 
 ### Features
 
