@@ -1,6 +1,5 @@
 import Link from "next/link";
 import React from "react";
-import Facebook from "../icons/Facebook";
 import Feedback from "../icons/Feedback";
 import Google from "../icons/Google";
 import Logo from "../icons/Logo";
@@ -11,11 +10,6 @@ import { GetServerSideProps, GetServerSidePropsContext } from "next";
 import Meta from "../components/Meta";
 
 const signInMethods = [
-  {
-    icons: Facebook,
-    content: "Continue with Facebook",
-    provider: "facebook",
-  },
   {
     icons: Google,
     content: "Continue with Google",
@@ -45,7 +39,7 @@ const SignIn = () => {
       <div>
         <div className="mx-auto w-[375px] max-w-[calc(100%-32px)] text-center">
           <h4 className="my-4 text-[32px] font-bold">Log in to TikTok</h4>
-          <p className="mt-3 mb-[32px] text-[15px] font-normal text-[rgba(255,255,255,0.75)]">
+          <p className="mb-[32px] mt-3 text-[15px] font-normal text-[rgba(255,255,255,0.75)]">
             Manage your account, check notifications, comment on videos, and
             more.
           </p>
@@ -55,7 +49,7 @@ const SignIn = () => {
               <button
                 key={item.provider}
                 onClick={() => signIn(item.provider)}
-                className="relative mb-4 flex w-full items-center justify-center border border-gray-600 px-4 py-2.5 last:mb-0"
+                className="relative mb-4 flex w-full items-center justify-center rounded-[4px] border border-gray-600 px-4 py-2.5 last:mb-0"
               >
                 <div className="absolute left-4 top-[50%] translate-y-[-50%]">
                   <item.icons />
